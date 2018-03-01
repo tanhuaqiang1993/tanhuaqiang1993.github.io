@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="JavaSE," />
 
 
 
@@ -79,16 +79,20 @@
 
 
 
-<meta name="description" content="java 后端开发">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Tanhq&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/tags/npm/index.html">
+<meta name="description" content="正则表达式校验字符串 matches()的使用123456789public static void main(String[] args) &amp;#123;	String qq = &quot;2345&quot;;	String regex = &quot;[1-9][0-9]&amp;#123;3,8&amp;#125;&quot;;	if(qq.matches(regex))&amp;#123;		System.out.println(&quot;true&quot;);	&amp;">
+<meta name="keywords" content="JavaSE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="正则表达式">
+<meta property="og:url" content="http://yoursite.com/2018/03/01/regex/index.html">
 <meta property="og:site_name" content="Tanhq&#39;s Blog">
-<meta property="og:description" content="java 后端开发">
+<meta property="og:description" content="正则表达式校验字符串 matches()的使用123456789public static void main(String[] args) &amp;#123;	String qq = &quot;2345&quot;;	String regex = &quot;[1-9][0-9]&amp;#123;3,8&amp;#125;&quot;;	if(qq.matches(regex))&amp;#123;		System.out.println(&quot;true&quot;);	&amp;">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/03/01/regex/console.png">
+<meta property="og:updated_time" content="2018-03-01T11:20:37.699Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Tanhq&#39;s Blog">
-<meta name="twitter:description" content="java 后端开发">
+<meta name="twitter:title" content="正则表达式">
+<meta name="twitter:description" content="正则表达式校验字符串 matches()的使用123456789public static void main(String[] args) &amp;#123;	String qq = &quot;2345&quot;;	String regex = &quot;[1-9][0-9]&amp;#123;3,8&amp;#125;&quot;;	if(qq.matches(regex))&amp;#123;		System.out.println(&quot;true&quot;);	&amp;">
+<meta name="twitter:image" content="http://yoursite.com/2018/03/01/regex/console.png">
 
 
 
@@ -118,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/npm/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/01/regex/"/>
 
 
 
 
 
-  <title>标签: npm | Tanhq's Blog</title>
+  <title>正则表达式 | Tanhq's Blog</title>
   
 
 
@@ -143,7 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
 	
@@ -288,54 +292,149 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>npm<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/01/regex/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tanhq">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog_logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tanhq's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/02/25/hello-tanhq/" itemprop="url">
-              
-                <span itemprop="name">listFiles(FilenameFilter filter)对文件进行过滤</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">正则表达式</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-02-25T19:57:52+08:00"
-              content="2018-02-25" >
-          02-25
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T19:16:57+08:00">
+                2018-03-01
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>正则表达式校验字符串</p>
+<h1 id="matches-的使用"><a href="#matches-的使用" class="headerlink" title="matches()的使用"></a>matches()的使用</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	String qq = <span class="string">"2345"</span>;</span><br><span class="line">	String regex = <span class="string">"[1-9][0-9]&#123;3,8&#125;"</span>;</span><br><span class="line">	<span class="keyword">if</span>(qq.matches(regex))&#123;</span><br><span class="line">		System.out.println(<span class="string">"true"</span>);</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		System.out.println(<span class="string">"false"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="控制台打印的结果"><a href="#控制台打印的结果" class="headerlink" title="控制台打印的结果"></a>控制台打印的结果</h1><p>  <img src="/2018/03/01/regex/console.png" alt="结果"></p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaSE/" rel="tag"># JavaSE</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/01/aaa/" rel="next" title="以多个相同字符切割字符串">
+                <i class="fa fa-chevron-left"></i> 以多个相同字符切割字符串
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -343,6 +442,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -363,8 +466,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -428,6 +540,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#matches-的使用"><span class="nav-number">1.</span> <span class="nav-text">matches()的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#控制台打印的结果"><span class="nav-number">2.</span> <span class="nav-text">控制台打印的结果</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -575,6 +703,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
