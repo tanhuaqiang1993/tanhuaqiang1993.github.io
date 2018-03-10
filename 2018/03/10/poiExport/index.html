@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JavaEE,POI,SpringMVC," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="poi数据导出到execl使用maven(pom.xml文件)引入Apache poi jar包1234567891011&amp;lt;!-- poi文件管理 --&amp;gt;&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;org.apache.poi&amp;lt;/groupId&amp;gt;	&amp;lt;artifactId&amp;gt;poi&amp;lt;/artifactId&amp;gt;	&amp;lt;version">
+<meta name="keywords" content="JavaEE,POI,SpringMVC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="poi数据导出">
+<meta property="og:url" content="http://yoursite.com/2018/03/10/poiExport/index.html">
+<meta property="og:site_name" content="Tanhq&#39;s Blog">
+<meta property="og:description" content="poi数据导出到execl使用maven(pom.xml文件)引入Apache poi jar包1234567891011&amp;lt;!-- poi文件管理 --&amp;gt;&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;org.apache.poi&amp;lt;/groupId&amp;gt;	&amp;lt;artifactId&amp;gt;poi&amp;lt;/artifactId&amp;gt;	&amp;lt;version">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-10T13:09:12.245Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="poi数据导出">
+<meta name="twitter:description" content="poi数据导出到execl使用maven(pom.xml文件)引入Apache poi jar包1234567891011&amp;lt;!-- poi文件管理 --&amp;gt;&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;org.apache.poi&amp;lt;/groupId&amp;gt;	&amp;lt;artifactId&amp;gt;poi&amp;lt;/artifactId&amp;gt;	&amp;lt;version">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/10/poiExport/"/>
+
+
+
+
+
+  <title>poi数据导出 | Tanhq's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+	
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tanhq's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">脚踏实地行，海阔天空飞</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-something">
+          <a href="/something" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            有料
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/10/poiExport/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tanhq">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog_logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tanhq's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">poi数据导出</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-10T20:44:34+08:00">
+                2018-03-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="poi数据导出到execl"><a href="#poi数据导出到execl" class="headerlink" title="poi数据导出到execl"></a>poi数据导出到execl</h1><h1 id="使用maven-pom-xml文件-引入Apache-poi-jar包"><a href="#使用maven-pom-xml文件-引入Apache-poi-jar包" class="headerlink" title="使用maven(pom.xml文件)引入Apache poi jar包"></a>使用maven(pom.xml文件)引入Apache poi jar包</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- poi文件管理 --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.apache.poi&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;poi&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;3.10-FINAL&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	 &lt;groupId&gt;org.apache.poi&lt;/groupId&gt;</span><br><span class="line">	 &lt;artifactId&gt;poi-ooxml&lt;/artifactId&gt;</span><br><span class="line">	 &lt;version&gt;3.10-FINAL&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="前台导出按钮"><a href="#前台导出按钮" class="headerlink" title="前台导出按钮"></a>前台导出按钮</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=<span class="string">"ropt"</span>&gt;</span><br><span class="line">	&lt;form action=<span class="string">"v_export.do"</span> method=<span class="string">"post"</span> &gt;</span><br><span class="line">	&lt;input <span class="built_in">type</span>=<span class="string">"hidden"</span> name=<span class="string">"userId"</span> value=<span class="string">"<span class="variable">$&#123;userId!&#125;</span>"</span>/&gt;</span><br><span class="line">	&lt;input <span class="built_in">type</span>=<span class="string">"hidden"</span> name=<span class="string">"siteId"</span> value=<span class="string">"<span class="variable">$&#123;siteId!&#125;</span>"</span>/&gt;</span><br><span class="line">	&lt;input <span class="built_in">type</span>=<span class="string">"hidden"</span> name=<span class="string">"category"</span> value=1 /&gt;</span><br><span class="line">	&lt;input class=<span class="string">"export"</span> <span class="built_in">type</span>=<span class="string">"submit"</span> style=<span class="string">"margin-right: 1000px;"</span> value=<span class="string">"&lt;@s.m "</span>template.export<span class="string">"/&gt;"</span>/&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span><br><span class="line">	&lt;/form&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="后台action导出execl表格的方法"><a href="#后台action导出execl表格的方法" class="headerlink" title="后台action导出execl表格的方法"></a>后台action导出execl表格的方法</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 日志导出功能:</span><br><span class="line"> * 1,导出登陆成功日志</span><br><span class="line"> * 2，导出登陆失败日志</span><br><span class="line"> * 3，导出后台操作日志</span><br><span class="line"> * @<span class="built_in">return</span></span><br><span class="line"> */</span><br><span class="line">@RequestMapping(<span class="string">"/log/v_export.do"</span>)</span><br><span class="line">public void logExport(Integer userId, Integer siteId, Integer category, Integer pageNo, </span><br><span class="line">		HttpServletRequest request, HttpServletResponse response, ModelMap model) &#123;</span><br><span class="line">	//获取登陆失败的信息，不需要userId,siteId</span><br><span class="line">	<span class="keyword">if</span>(category == 2)&#123;</span><br><span class="line">		userId = null;</span><br><span class="line">		siteId = null;</span><br><span class="line">	&#125;</span><br><span class="line">	// 获取指定类型的日志列表</span><br><span class="line">	List&lt;CmsLog&gt; list =  manager.getList(userId, siteId, category);</span><br><span class="line">	</span><br><span class="line">	//生成<span class="built_in">export</span>表</span><br><span class="line">	HSSFWorkbook wb = exportExcel(list);</span><br><span class="line"></span><br><span class="line">	try &#123;</span><br><span class="line">	   response.setContentType(<span class="string">"application/vnd.ms-excel;charset=utf-8"</span>);</span><br><span class="line">		Calendar ca = Calendar.getInstance();</span><br><span class="line"></span><br><span class="line">		String filename=ca.get(Calendar.YEAR)+<span class="string">""</span>+(ca.get(Calendar.MONTH)+1)+<span class="string">""</span>+ca.get(Calendar.DATE)+<span class="string">""</span>+ca.get(Calendar.HOUR)+<span class="string">""</span>+ca.get(Calendar.MINUTE)+<span class="string">""</span>+<span class="string">".xls"</span>;</span><br><span class="line">		response.setHeader(<span class="string">"Content-disposition"</span>,	<span class="string">"attachment; filename="</span>+filename);</span><br><span class="line">		response.setHeader(<span class="string">"Pragma"</span>, <span class="string">"public"</span>);</span><br><span class="line">    	response.setHeader(<span class="string">"Cache-Control"</span>, <span class="string">"max-age=30"</span>);</span><br><span class="line">		OutputStream out = response.getOutputStream();</span><br><span class="line">		wb.write(out);</span><br><span class="line">		out.flush();</span><br><span class="line">		out.close();</span><br><span class="line">	&#125; catch (IOException e) &#123;</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="下面代码是提取的生成export表的方法-有些字段需要做空指针判断"><a href="#下面代码是提取的生成export表的方法-有些字段需要做空指针判断" class="headerlink" title="下面代码是提取的生成export表的方法,有些字段需要做空指针判断"></a>下面代码是提取的生成export表的方法,有些字段需要做空指针判断</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">private HSSFWorkbook exportExcel(List&lt;CmsLog&gt; list) &#123;</span><br><span class="line">	HSSFWorkbook wb = new HSSFWorkbook();</span><br><span class="line">	HSSFSheet sheet = wb.createSheet(<span class="string">"Pojo"</span>);</span><br><span class="line">	HSSFCellStyle style = wb.createCellStyle();</span><br><span class="line">	sheet.autoSizeColumn(0);</span><br><span class="line">	style.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框</span><br><span class="line">	style.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框</span><br><span class="line">	style.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框</span><br><span class="line">	style.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框</span><br><span class="line">	style.setAlignment(HSSFCellStyle.ALIGN_CENTER);</span><br><span class="line">	//第一行  设置表头</span><br><span class="line">	HSSFRow row0 = sheet.createRow(0);</span><br><span class="line">	HSSFCell cell0 = row0.createCell(0);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"日志ID"</span>);</span><br><span class="line">    cell0 = row0.createCell(1);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"用户ID"</span>);</span><br><span class="line">	cell0 = row0.createCell(2);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"站点ID"</span>);</span><br><span class="line">	cell0 = row0.createCell(3);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"日志类别"</span>);</span><br><span class="line">	cell0 = row0.createCell(4);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"日志记录时间"</span>);</span><br><span class="line">	cell0 = row0.createCell(5);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"IP地址"</span>);</span><br><span class="line">	cell0 = row0.createCell(6);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"路径"</span>);</span><br><span class="line">	cell0 = row0.createCell(7);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"标题"</span>);</span><br><span class="line">	cell0 = row0.createCell(8);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"内容"</span>);</span><br><span class="line">	//循环遍历list  将内容写进Excel表格中</span><br><span class="line">	int i=1;</span><br><span class="line">	DateFormat dFormat = new SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>);</span><br><span class="line">	<span class="keyword">for</span> (CmsLog cmsLog : list) &#123;</span><br><span class="line">		int j = 0;</span><br><span class="line">		HSSFRow row = sheet.createRow(i);</span><br><span class="line">		HSSFCell cell = row.createCell(j);</span><br><span class="line">		cell.setCellStyle(style);</span><br><span class="line">		cell.setCellValue(cmsLog.getId());</span><br><span class="line">		cell = row.createCell(++j);</span><br><span class="line">		cell.setCellStyle(style);</span><br><span class="line">		<span class="keyword">if</span>(cmsLog.getUser() != null )&#123;</span><br><span class="line">			cell.setCellValue(cmsLog.getUser().getId());</span><br><span class="line">		&#125;</span><br><span class="line">	    cell = row.createCell(++j);</span><br><span class="line">	    cell.setCellStyle(style);</span><br><span class="line">	    <span class="keyword">if</span> (cmsLog.getSite()!= null ) &#123;</span><br><span class="line">			cell.setCellValue(cmsLog.getSite().getId());</span><br><span class="line">		&#125;</span><br><span class="line">		cell = row.createCell(++j);</span><br><span class="line">	    cell.setCellStyle(style);</span><br><span class="line">	    <span class="keyword">if</span> (cmsLog.getCategory() != null || !<span class="string">""</span>.equals(cmsLog.getCategory())) &#123;</span><br><span class="line">			cell.setCellValue(cmsLog.getCategory());</span><br><span class="line">		&#125;</span><br><span class="line">		cell = row.createCell(++j);</span><br><span class="line">	    cell.setCellStyle(style);</span><br><span class="line">	    <span class="keyword">if</span> (cmsLog.getTime()!=null || !<span class="string">""</span>.equals(cmsLog.getTime())) &#123;</span><br><span class="line">			cell.setCellValue(dFormat.format(cmsLog.getTime()));</span><br><span class="line">		&#125;</span><br><span class="line">		cell = row.createCell(++j);</span><br><span class="line">	    cell.setCellStyle(style);</span><br><span class="line">	    <span class="keyword">if</span> (cmsLog.getIp()!=null || !<span class="string">""</span>.equals(cmsLog.getIp())) &#123;</span><br><span class="line">			cell.setCellValue(cmsLog.getIp());</span><br><span class="line">		&#125;</span><br><span class="line">		cell = row.createCell(++j);</span><br><span class="line">	    cell.setCellStyle(style);</span><br><span class="line">	    <span class="keyword">if</span> (cmsLog.getUrl()!=null || !<span class="string">""</span>.equals(cmsLog.getUrl())) &#123;</span><br><span class="line">			cell.setCellValue(cmsLog.getUrl());</span><br><span class="line">		&#125;</span><br><span class="line">		cell = row.createCell(++j);</span><br><span class="line">	    cell.setCellStyle(style);</span><br><span class="line">	    <span class="keyword">if</span> (cmsLog.getTitle()!=null || !<span class="string">""</span>.equals(cmsLog.getTitle())) &#123;</span><br><span class="line">			cell.setCellValue(cmsLog.getTitle());</span><br><span class="line">		&#125;</span><br><span class="line">		cell = row.createCell(++j);</span><br><span class="line">	    cell.setCellStyle(style);</span><br><span class="line">	    <span class="keyword">if</span> (cmsLog.getContent()!=null || !<span class="string">""</span>.equals(cmsLog.getContent())) &#123;</span><br><span class="line">			cell.setCellValue(cmsLog.getContent());</span><br><span class="line">		&#125;</span><br><span class="line">		i++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> wb;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaEE/" rel="tag"># JavaEE</a>
+          
+            <a href="/tags/POI/" rel="tag"># POI</a>
+          
+            <a href="/tags/SpringMVC/" rel="tag"># SpringMVC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/01/regex/" rel="next" title="正则表达式">
+                <i class="fa fa-chevron-left"></i> 正则表达式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/10/poiImport/" rel="prev" title="poi数据导入">
+                poi数据导入 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/blog_logo.jpg"
+                alt="tanhq" />
+            
+              <p class="site-author-name" itemprop="name">tanhq</p>
+              <p class="site-description motion-element" itemprop="description">java 后端开发</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#poi数据导出到execl"><span class="nav-number">1.</span> <span class="nav-text">poi数据导出到execl</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用maven-pom-xml文件-引入Apache-poi-jar包"><span class="nav-number">2.</span> <span class="nav-text">使用maven(pom.xml文件)引入Apache poi jar包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#前台导出按钮"><span class="nav-number">3.</span> <span class="nav-text">前台导出按钮</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后台action导出execl表格的方法"><span class="nav-number">4.</span> <span class="nav-text">后台action导出execl表格的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#下面代码是提取的生成export表的方法-有些字段需要做空指针判断"><span class="nav-number">5.</span> <span class="nav-text">下面代码是提取的生成export表的方法,有些字段需要做空指针判断</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tanhq</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+<br/>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
