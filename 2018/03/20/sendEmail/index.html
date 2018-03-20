@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="JavaSE,hexo,github,npm," />
+  <meta name="keywords" content="JavaSE,SpringMVC," />
 
 
 
@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="listFiles(FilenameFilter filter)          返回抽象路径名数组，这些路径名表示此抽象路径名表示的目录中满足指定过滤器的文件和目录。 获取指定目录下的指定文件123456789public static void method2()&amp;#123; 	File parent = new File(&quot;D:\\workspace\\baixiantong\\webap">
-<meta name="keywords" content="JavaSE,hexo,github,npm">
+<meta name="description" content="利用qq邮箱服务器发邮件,使用之前必须开启smtp服务 mail.properties配置1234567891011mail.host = smtp.qq.commail.from = 983671836@qq.commail.to = tanhq@ec.com.cn#\u59D3\u540Dmail.personal=\u8C2D\u534E\u5F3Amail.username = 98367">
+<meta name="keywords" content="JavaSE,SpringMVC">
 <meta property="og:type" content="article">
-<meta property="og:title" content="listFiles(FilenameFilter filter)对文件进行过滤">
-<meta property="og:url" content="http://yoursite.com/2018/02/25/hello-tanhq/index.html">
+<meta property="og:title" content="sendEmail">
+<meta property="og:url" content="http://yoursite.com/2018/03/20/sendEmail/index.html">
 <meta property="og:site_name" content="Tanhq&#39;s Blog">
-<meta property="og:description" content="listFiles(FilenameFilter filter)          返回抽象路径名数组，这些路径名表示此抽象路径名表示的目录中满足指定过滤器的文件和目录。 获取指定目录下的指定文件123456789public static void method2()&amp;#123; 	File parent = new File(&quot;D:\\workspace\\baixiantong\\webap">
+<meta property="og:description" content="利用qq邮箱服务器发邮件,使用之前必须开启smtp服务 mail.properties配置1234567891011mail.host = smtp.qq.commail.from = 983671836@qq.commail.to = tanhq@ec.com.cn#\u59D3\u540Dmail.personal=\u8C2D\u534E\u5F3Amail.username = 98367">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-01T11:02:22.941Z">
+<meta property="og:image" content="http://yoursite.com/2018/03/20/sendEmail/email.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/20/sendEmail/email2.png">
+<meta property="og:updated_time" content="2018-03-20T12:57:08.617Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="listFiles(FilenameFilter filter)对文件进行过滤">
-<meta name="twitter:description" content="listFiles(FilenameFilter filter)          返回抽象路径名数组，这些路径名表示此抽象路径名表示的目录中满足指定过滤器的文件和目录。 获取指定目录下的指定文件123456789public static void method2()&amp;#123; 	File parent = new File(&quot;D:\\workspace\\baixiantong\\webap">
+<meta name="twitter:title" content="sendEmail">
+<meta name="twitter:description" content="利用qq邮箱服务器发邮件,使用之前必须开启smtp服务 mail.properties配置1234567891011mail.host = smtp.qq.commail.from = 983671836@qq.commail.to = tanhq@ec.com.cn#\u59D3\u540Dmail.personal=\u8C2D\u534E\u5F3Amail.username = 98367">
+<meta name="twitter:image" content="http://yoursite.com/2018/03/20/sendEmail/email.png">
 
 
 
@@ -120,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/02/25/hello-tanhq/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/20/sendEmail/"/>
 
 
 
 
 
-  <title>listFiles(FilenameFilter filter)对文件进行过滤 | Tanhq's Blog</title>
+  <title>sendEmail | Tanhq's Blog</title>
   
 
 
@@ -304,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/25/hello-tanhq/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/20/sendEmail/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="tanhq">
@@ -321,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">listFiles(FilenameFilter filter)对文件进行过滤</h1>
+          <h1 class="post-title" itemprop="name headline">sendEmail</h1>
         
 
         <div class="post-meta">
@@ -333,8 +336,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-25T19:57:52+08:00">
-                2018-02-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-20T20:32:19+08:00">
+                2018-03-20
               </time>
             
 
@@ -343,28 +346,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JavaSE/" itemprop="url" rel="index">
-                    <span itemprop="name">JavaSE</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -393,11 +374,12 @@
       
 
       
-        <p>listFiles(FilenameFilter filter)<br>          返回抽象路径名数组，这些路径名表示此抽象路径名表示的目录中满足指定过滤器的文件和目录。</p>
-<h1 id="获取指定目录下的指定文件"><a href="#获取指定目录下的指定文件" class="headerlink" title="获取指定目录下的指定文件"></a>获取指定目录下的指定文件</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public static void <span class="function"><span class="title">method2</span></span>()&#123; </span><br><span class="line">	File parent = new File(<span class="string">"D:\\workspace\\baixiantong\\webapp\\WEB-INF\\t\\cms\\www\\default\\channel"</span>);</span><br><span class="line">	String prefix = <span class="string">"求购"</span>;</span><br><span class="line">	File[] listFile = parent.listFiles(new PrefixFilter(prefix));</span><br><span class="line">	<span class="keyword">for</span> (File file : listFile) &#123;</span><br><span class="line">		System.out.print(file.getAbsolutePath()+<span class="string">"\t"</span>+file.getName());</span><br><span class="line">		System.out.println();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="定义一个文件，实现文件过滤器FileFilter"><a href="#定义一个文件，实现文件过滤器FileFilter" class="headerlink" title="定义一个文件，实现文件过滤器FileFilter"></a>定义一个文件，实现文件过滤器FileFilter</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class PrefixFilter implements FileFilter &#123;</span><br><span class="line"></span><br><span class="line">	//定义一个变量</span><br><span class="line">	private String prefix;</span><br><span class="line">	</span><br><span class="line">	//使用构造方法对变量赋值</span><br><span class="line">	public PrefixFilter(String prefix) &#123;</span><br><span class="line">		this.prefix = prefix;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	//重写accept()方法</span><br><span class="line">	@Override</span><br><span class="line">	public boolean accept(File pathname) &#123;</span><br><span class="line">		String name = pathname.getName();</span><br><span class="line">		<span class="built_in">return</span> pathname.isFile() &amp;&amp; name.startsWith(prefix);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><pre><code>对文件进行过滤需要重写FileFilter的accept()方法，根据该方法的返回值来判断是否获取文件
-</code></pre>
+        <p>利用qq邮箱服务器发邮件,使用之前必须<a href="http://blog.csdn.net/qq_33556185/article/details/51028952" target="_blank" rel="noopener">开启smtp服务</a></p>
+<h1 id="mail-properties配置"><a href="#mail-properties配置" class="headerlink" title="mail.properties配置"></a>mail.properties配置</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mail.host = smtp.qq.com</span><br><span class="line">mail.from = 983671836@qq.com</span><br><span class="line">mail.to = tanhq@ec.com.cn</span><br><span class="line"><span class="comment">#\u59D3\u540D</span></span><br><span class="line">mail.personal=\u8C2D\u534E\u5F3A</span><br><span class="line">mail.username = 983671836@qq.com</span><br><span class="line">mail.password = wqjlfulwlwrqbdfg</span><br><span class="line">mail.port = 465</span><br><span class="line">mail.content.subject=\u90AE\u4EF6\u4E3B\u9898</span><br><span class="line">mail.content.encode=utf-8</span><br><span class="line">mail.content.tpl=\u9A8C\u8BC1\u7801\u4E3A\uFF1A&#123;0&#125;\uFF0C\u6709\u6548\u65F6\u95F43\u5206\u949F</span><br></pre></td></tr></table></figure>
+<h1 id="发邮件代码"><a href="#发邮件代码" class="headerlink" title="发邮件代码"></a>发邮件代码</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">package com.gft.email;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.InputStream;</span><br><span class="line">import java.text.MessageFormat;</span><br><span class="line">import java.util.Properties;</span><br><span class="line">import java.util.Random;</span><br><span class="line"></span><br><span class="line">import org.springframework.mail.SimpleMailMessage;</span><br><span class="line">import org.springframework.mail.javamail.JavaMailSenderImpl;</span><br><span class="line"></span><br><span class="line">public class SendEmail &#123;</span><br><span class="line"></span><br><span class="line">	private static Properties properties ;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		</span><br><span class="line">        // 获取系统属性</span><br><span class="line">	    properties = System.getProperties();</span><br><span class="line">	    // 加载资源文件</span><br><span class="line">		InputStream <span class="keyword">in</span> = SendEmail.class.getResourceAsStream(<span class="string">"/mail.properties"</span>);</span><br><span class="line">		</span><br><span class="line">		//随机生成一个4位数字</span><br><span class="line">		Random rand = new Random();</span><br><span class="line">		Integer number = rand.nextInt(9000)+1000;</span><br><span class="line">		try &#123;</span><br><span class="line">			properties.load(<span class="keyword">in</span>);</span><br><span class="line">			</span><br><span class="line">			// 创建邮件发送服务器  ,端口号默认的,不需要</span><br><span class="line">			JavaMailSenderImpl sender = new JavaMailSenderImpl();</span><br><span class="line">			sender.setHost(properties.getProperty(<span class="string">"mail.host"</span>));</span><br><span class="line">			//不需要端口号，否则发送失败</span><br><span class="line">			//sender.setPort(Integer.valueOf(properties.getProperty(<span class="string">"mail.port"</span>)));</span><br><span class="line">			sender.setUsername(properties.getProperty(<span class="string">"mail.username"</span>));</span><br><span class="line">			sender.setPassword(properties.getProperty(<span class="string">"mail.password"</span>));</span><br><span class="line">			</span><br><span class="line">	        //加认证机制  </span><br><span class="line">	        Properties javaMailProperties = new Properties();  </span><br><span class="line">	        javaMailProperties.put(<span class="string">"mail.smtp.auth"</span>, <span class="literal">true</span>);   </span><br><span class="line">	        javaMailProperties.put(<span class="string">"mail.smtp.starttls.enable"</span>, <span class="literal">true</span>);   </span><br><span class="line">	        javaMailProperties.put(<span class="string">"mail.smtp.timeout"</span>, 5000);   </span><br><span class="line">	        sender.setJavaMailProperties(javaMailProperties); </span><br><span class="line">	        </span><br><span class="line">	        //创建邮件内容  </span><br><span class="line">	        SimpleMailMessage message=new SimpleMailMessage();  </span><br><span class="line">	        message.setFrom(properties.getProperty(<span class="string">"mail.from"</span>));  </span><br><span class="line">	        message.setTo(properties.getProperty(<span class="string">"mail.to"</span>));  </span><br><span class="line">	        message.setSubject(properties.getProperty(<span class="string">"mail.content.subject"</span>));</span><br><span class="line">	        //数字number必须转成String，否则数据(1432)会格式化为1,432</span><br><span class="line">	        message.setText(MessageFormat.format(properties.getProperty(<span class="string">"mail.content.tpl"</span>), number.toString()));</span><br><span class="line">	        //发送邮件  </span><br><span class="line">	        sender.send(message);  </span><br><span class="line">	        System.out.println(<span class="string">"邮件发送成功"</span>);</span><br><span class="line">		&#125; catch (IOException e) &#123;</span><br><span class="line">			throw new RuntimeException(<span class="string">"Error while processing mail.properties"</span>, e);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="qq邮箱服务器POP3-SMTP服务必须是开启的"><a href="#qq邮箱服务器POP3-SMTP服务必须是开启的" class="headerlink" title="qq邮箱服务器POP3/SMTP服务必须是开启的"></a>qq邮箱服务器POP3/SMTP服务必须是开启的</h1><p>  <img src="/2018/03/20/sendEmail/email.png" alt="结果"></p>
+<h1 id="常用的收件-发件服务器的地址和端口"><a href="#常用的收件-发件服务器的地址和端口" class="headerlink" title="常用的收件/发件服务器的地址和端口"></a>常用的收件/发件服务器的地址和端口</h1><p>  <img src="/2018/03/20/sendEmail/email2.png" alt="结果"></p>
+
       
     </div>
     
@@ -416,11 +398,7 @@
           
             <a href="/tags/JavaSE/" rel="tag"># JavaSE</a>
           
-            <a href="/tags/hexo/" rel="tag"># hexo</a>
-          
-            <a href="/tags/github/" rel="tag"># github</a>
-          
-            <a href="/tags/npm/" rel="tag"># npm</a>
+            <a href="/tags/SpringMVC/" rel="tag"># SpringMVC</a>
           
         </div>
       
@@ -433,15 +411,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/03/10/fileUpAndDown/" rel="next" title="文件的上传和下载">
+                <i class="fa fa-chevron-left"></i> 文件的上传和下载
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/01/aaa/" rel="prev" title="以多个相同字符切割字符串">
-                以多个相同字符切割字符串 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -577,7 +555,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#获取指定目录下的指定文件"><span class="nav-number">1.</span> <span class="nav-text">获取指定目录下的指定文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#定义一个文件，实现文件过滤器FileFilter"><span class="nav-number">2.</span> <span class="nav-text">定义一个文件，实现文件过滤器FileFilter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结："><span class="nav-number">3.</span> <span class="nav-text">总结：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mail-properties配置"><span class="nav-number">1.</span> <span class="nav-text">mail.properties配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发邮件代码"><span class="nav-number">2.</span> <span class="nav-text">发邮件代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#qq邮箱服务器POP3-SMTP服务必须是开启的"><span class="nav-number">3.</span> <span class="nav-text">qq邮箱服务器POP3/SMTP服务必须是开启的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用的收件-发件服务器的地址和端口"><span class="nav-number">4.</span> <span class="nav-text">常用的收件/发件服务器的地址和端口</span></a></li></ol></div>
             
 
           </div>
