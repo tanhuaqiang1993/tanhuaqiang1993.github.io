@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="JavaSE,SpringMVC," />
+  <meta name="keywords" content="JavaEE,Java 8," />
 
 
 
@@ -79,21 +79,20 @@
 
 
 
-<meta name="description" content="利用qq邮箱服务器发邮件,使用之前必须开启smtp服务 mail.properties配置1234567891011mail.host = smtp.qq.commail.from = 983671836@qq.commail.to = tanhq@ec.com.cn#\u59D3\u540Dmail.personal=\u8C2D\u534E\u5F3Amail.username = 98367">
-<meta name="keywords" content="JavaSE,SpringMVC">
+<meta name="description" content="Lambda介绍：Lambda表达式的主要作用就是代替匿名内部类(匿名内部类是接口的实现类，并重写的接口的抽象方法)的烦琐语法三部分组成：    形参列表：重写方法的形参,允许省略参数的类型    箭头：-&amp;gt;    代码块：重写方法的具体内容 定义三个接口123456789101112/** * 定义三个接口 */interface Eatable &amp;#123;	void taste();&amp;">
+<meta name="keywords" content="JavaEE,Java 8">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sendEmail">
-<meta property="og:url" content="http://yoursite.com/2018/03/20/sendEmail/index.html">
+<meta property="og:title" content="Lambda">
+<meta property="og:url" content="http://yoursite.com/2018/04/13/Lambda/index.html">
 <meta property="og:site_name" content="Tanhq&#39;s Blog">
-<meta property="og:description" content="利用qq邮箱服务器发邮件,使用之前必须开启smtp服务 mail.properties配置1234567891011mail.host = smtp.qq.commail.from = 983671836@qq.commail.to = tanhq@ec.com.cn#\u59D3\u540Dmail.personal=\u8C2D\u534E\u5F3Amail.username = 98367">
+<meta property="og:description" content="Lambda介绍：Lambda表达式的主要作用就是代替匿名内部类(匿名内部类是接口的实现类，并重写的接口的抽象方法)的烦琐语法三部分组成：    形参列表：重写方法的形参,允许省略参数的类型    箭头：-&amp;gt;    代码块：重写方法的具体内容 定义三个接口123456789101112/** * 定义三个接口 */interface Eatable &amp;#123;	void taste();&amp;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2018/03/20/sendEmail/email.png">
-<meta property="og:image" content="http://yoursite.com/2018/03/20/sendEmail/email2.png">
-<meta property="og:updated_time" content="2018-03-20T12:57:08.617Z">
+<meta property="og:image" content="http://yoursite.com/2018/04/13/Lambda/Lambda.png">
+<meta property="og:updated_time" content="2018-04-13T14:07:58.776Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sendEmail">
-<meta name="twitter:description" content="利用qq邮箱服务器发邮件,使用之前必须开启smtp服务 mail.properties配置1234567891011mail.host = smtp.qq.commail.from = 983671836@qq.commail.to = tanhq@ec.com.cn#\u59D3\u540Dmail.personal=\u8C2D\u534E\u5F3Amail.username = 98367">
-<meta name="twitter:image" content="http://yoursite.com/2018/03/20/sendEmail/email.png">
+<meta name="twitter:title" content="Lambda">
+<meta name="twitter:description" content="Lambda介绍：Lambda表达式的主要作用就是代替匿名内部类(匿名内部类是接口的实现类，并重写的接口的抽象方法)的烦琐语法三部分组成：    形参列表：重写方法的形参,允许省略参数的类型    箭头：-&amp;gt;    代码块：重写方法的具体内容 定义三个接口123456789101112/** * 定义三个接口 */interface Eatable &amp;#123;	void taste();&amp;">
+<meta name="twitter:image" content="http://yoursite.com/2018/04/13/Lambda/Lambda.png">
 
 
 
@@ -123,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/03/20/sendEmail/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/13/Lambda/"/>
 
 
 
 
 
-  <title>sendEmail | Tanhq's Blog</title>
+  <title>Lambda | Tanhq's Blog</title>
   
 
 
@@ -307,7 +306,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/20/sendEmail/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/13/Lambda/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="tanhq">
@@ -324,7 +323,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">sendEmail</h1>
+          <h1 class="post-title" itemprop="name headline">Lambda</h1>
         
 
         <div class="post-meta">
@@ -336,8 +335,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-20T20:32:19+08:00">
-                2018-03-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-13T21:52:26+08:00">
+                2018-04-13
               </time>
             
 
@@ -374,12 +373,15 @@
       
 
       
-        <p>利用qq邮箱服务器发邮件,使用之前必须<a href="http://blog.csdn.net/qq_33556185/article/details/51028952" target="_blank" rel="noopener">开启smtp服务</a></p>
-<h1 id="mail-properties配置"><a href="#mail-properties配置" class="headerlink" title="mail.properties配置"></a>mail.properties配置</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mail.host = smtp.qq.com</span><br><span class="line">mail.from = 983671836@qq.com</span><br><span class="line">mail.to = tanhq@ec.com.cn</span><br><span class="line"><span class="comment">#\u59D3\u540D</span></span><br><span class="line">mail.personal=\u8C2D\u534E\u5F3A</span><br><span class="line">mail.username = 983671836@qq.com</span><br><span class="line">mail.password = wqjlfulwlwrqbdfg</span><br><span class="line">mail.port = 465</span><br><span class="line">mail.content.subject=\u90AE\u4EF6\u4E3B\u9898</span><br><span class="line">mail.content.encode=utf-8</span><br><span class="line">mail.content.tpl=\u9A8C\u8BC1\u7801\u4E3A\uFF1A&#123;0&#125;\uFF0C\u6709\u6548\u65F6\u95F43\u5206\u949F</span><br></pre></td></tr></table></figure>
-<h1 id="发邮件代码"><a href="#发邮件代码" class="headerlink" title="发邮件代码"></a>发邮件代码</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">package com.gft.email;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.InputStream;</span><br><span class="line">import java.text.MessageFormat;</span><br><span class="line">import java.util.Properties;</span><br><span class="line">import java.util.Random;</span><br><span class="line"></span><br><span class="line">import org.springframework.mail.SimpleMailMessage;</span><br><span class="line">import org.springframework.mail.javamail.JavaMailSenderImpl;</span><br><span class="line"></span><br><span class="line">public class SendEmail &#123;</span><br><span class="line"></span><br><span class="line">	private static Properties properties ;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		</span><br><span class="line">        // 获取系统属性</span><br><span class="line">	    properties = System.getProperties();</span><br><span class="line">	    // 加载资源文件</span><br><span class="line">		InputStream <span class="keyword">in</span> = SendEmail.class.getResourceAsStream(<span class="string">"/mail.properties"</span>);</span><br><span class="line">		</span><br><span class="line">		//随机生成一个4位数字</span><br><span class="line">		Random rand = new Random();</span><br><span class="line">		Integer number = rand.nextInt(9000)+1000;</span><br><span class="line">		try &#123;</span><br><span class="line">			properties.load(<span class="keyword">in</span>);</span><br><span class="line">			</span><br><span class="line">			// 创建邮件发送服务器  ,端口号默认的,不需要</span><br><span class="line">			JavaMailSenderImpl sender = new JavaMailSenderImpl();</span><br><span class="line">			sender.setHost(properties.getProperty(<span class="string">"mail.host"</span>));</span><br><span class="line">			//不需要端口号，否则发送失败</span><br><span class="line">			//sender.setPort(Integer.valueOf(properties.getProperty(<span class="string">"mail.port"</span>)));</span><br><span class="line">			sender.setUsername(properties.getProperty(<span class="string">"mail.username"</span>));</span><br><span class="line">			sender.setPassword(properties.getProperty(<span class="string">"mail.password"</span>));</span><br><span class="line">			</span><br><span class="line">	        //加认证机制  </span><br><span class="line">	        Properties javaMailProperties = new Properties();  </span><br><span class="line">	        javaMailProperties.put(<span class="string">"mail.smtp.auth"</span>, <span class="literal">true</span>);   </span><br><span class="line">	        javaMailProperties.put(<span class="string">"mail.smtp.starttls.enable"</span>, <span class="literal">true</span>);   </span><br><span class="line">	        javaMailProperties.put(<span class="string">"mail.smtp.timeout"</span>, 5000);   </span><br><span class="line">	        sender.setJavaMailProperties(javaMailProperties); </span><br><span class="line">	        </span><br><span class="line">	        //创建邮件内容  </span><br><span class="line">	        SimpleMailMessage message=new SimpleMailMessage();  </span><br><span class="line">	        message.setFrom(properties.getProperty(<span class="string">"mail.from"</span>));  </span><br><span class="line">	        message.setTo(properties.getProperty(<span class="string">"mail.to"</span>));  </span><br><span class="line">	        message.setSubject(properties.getProperty(<span class="string">"mail.content.subject"</span>));</span><br><span class="line">	        //数字number必须转成String，否则数据(1432)会格式化为1,432</span><br><span class="line">	        message.setText(MessageFormat.format(properties.getProperty(<span class="string">"mail.content.tpl"</span>), number.toString()));</span><br><span class="line">	        //发送邮件  </span><br><span class="line">	        sender.send(message);  </span><br><span class="line">	        System.out.println(<span class="string">"邮件发送成功"</span>);</span><br><span class="line">		&#125; catch (IOException e) &#123;</span><br><span class="line">			throw new RuntimeException(<span class="string">"Error while processing mail.properties"</span>, e);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="qq邮箱服务器POP3-SMTP服务必须是开启的"><a href="#qq邮箱服务器POP3-SMTP服务必须是开启的" class="headerlink" title="qq邮箱服务器POP3/SMTP服务必须是开启的"></a>qq邮箱服务器POP3/SMTP服务必须是开启的</h1><p>  <img src="/2018/03/20/sendEmail/email.png" alt="结果"></p>
-<h1 id="常用的收件-发件服务器的地址和端口"><a href="#常用的收件-发件服务器的地址和端口" class="headerlink" title="常用的收件/发件服务器的地址和端口"></a>常用的收件/发件服务器的地址和端口</h1><p>  <img src="/2018/03/20/sendEmail/email2.png" alt="结果"></p>
-
+        <h1 id="Lambda介绍：Lambda表达式的主要作用就是代替匿名内部类-匿名内部类是接口的实现类，并重写的接口的抽象方法-的烦琐语法"><a href="#Lambda介绍：Lambda表达式的主要作用就是代替匿名内部类-匿名内部类是接口的实现类，并重写的接口的抽象方法-的烦琐语法" class="headerlink" title="Lambda介绍：Lambda表达式的主要作用就是代替匿名内部类(匿名内部类是接口的实现类，并重写的接口的抽象方法)的烦琐语法"></a>Lambda介绍：Lambda表达式的主要作用就是代替匿名内部类(匿名内部类是接口的实现类，并重写的接口的抽象方法)的烦琐语法</h1><pre><code>三部分组成：
+   形参列表：重写方法的形参,允许省略参数的类型
+   箭头：-&gt;
+   代码块：重写方法的具体内容
+</code></pre><h1 id="定义三个接口"><a href="#定义三个接口" class="headerlink" title="定义三个接口"></a>定义三个接口</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 定义三个接口</span><br><span class="line"> */</span><br><span class="line">interface Eatable &#123;</span><br><span class="line">	void taste();</span><br><span class="line">&#125;</span><br><span class="line">interface Flyable&#123;</span><br><span class="line">	void fly(String weather);</span><br><span class="line">&#125;</span><br><span class="line">interface Addable&#123;</span><br><span class="line">	int add(int a ,int b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a>测试类</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public class LambdaQs &#123;</span><br><span class="line">	public void eat(Eatable e)&#123;</span><br><span class="line">		e.taste();//调用的是接口实现类重写的方法</span><br><span class="line">	&#125;</span><br><span class="line">	public void drive(Flyable f)&#123;</span><br><span class="line">		f.fly(<span class="string">"碧空如洗的晴日！"</span>);//调用的是接口实现类重写的方法</span><br><span class="line">	&#125;</span><br><span class="line">	public void <span class="built_in">test</span>(Addable add)&#123;</span><br><span class="line">		System.out.println(<span class="string">"5和3的和为："</span>+add.add(3, 5));</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		LambdaQs lq = new LambdaQs();</span><br><span class="line">		/*</span><br><span class="line">		 * Lambda表达式的代码块只有一条语句，可以省略花括号</span><br><span class="line">		 * 不带形参的匿名方法</span><br><span class="line">		 */</span><br><span class="line">		lq.eat(() -&gt; System.out.println(<span class="string">"苹果的味道很好！！"</span>));</span><br><span class="line">		</span><br><span class="line">		//参数列表可以省略参数类型，参数列表只有一个参数，可以省略圆括号</span><br><span class="line">		lq.drive( weather -&gt; &#123;</span><br><span class="line">			System.out.println(<span class="string">"今天天气是："</span>+weather);</span><br><span class="line">			System.out.println(<span class="string">"直升机飞行平稳！"</span>);</span><br><span class="line">		&#125;);</span><br><span class="line">		</span><br><span class="line">		/*</span><br><span class="line">		 * 重写的是实现类的方法，参数是形参，而不是实参</span><br><span class="line">		 * 代码块只有一条语句，可以省略花括号，而且这句为返回语句，可以省略<span class="built_in">return</span>关键字</span><br><span class="line">		 */</span><br><span class="line">		lq.test((a,b) -&gt; a+b);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  控制台打印<br>      <img src="/2018/04/13/Lambda/Lambda.png" alt="结果"></p>
+<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><pre><code>Lambda表达式的主要作用就是 代替匿名内部类(匿名内部类是接口的实现类，并重写的接口的抽象方法)的烦琐语法
+</code></pre>
       
     </div>
     
@@ -396,9 +398,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/JavaSE/" rel="tag"># JavaSE</a>
+            <a href="/tags/JavaEE/" rel="tag"># JavaEE</a>
           
-            <a href="/tags/SpringMVC/" rel="tag"># SpringMVC</a>
+            <a href="/tags/Java-8/" rel="tag"># Java 8</a>
           
         </div>
       
@@ -411,8 +413,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/10/fileUpAndDown/" rel="next" title="文件的上传和下载">
-                <i class="fa fa-chevron-left"></i> 文件的上传和下载
+              <a href="/2018/03/20/sendEmail/" rel="next" title="sendEmail">
+                <i class="fa fa-chevron-left"></i> sendEmail
               </a>
             
           </div>
@@ -420,10 +422,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/13/Lambda/" rel="prev" title="Lambda">
-                Lambda <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -559,7 +557,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mail-properties配置"><span class="nav-number">1.</span> <span class="nav-text">mail.properties配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发邮件代码"><span class="nav-number">2.</span> <span class="nav-text">发邮件代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#qq邮箱服务器POP3-SMTP服务必须是开启的"><span class="nav-number">3.</span> <span class="nav-text">qq邮箱服务器POP3/SMTP服务必须是开启的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用的收件-发件服务器的地址和端口"><span class="nav-number">4.</span> <span class="nav-text">常用的收件/发件服务器的地址和端口</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Lambda介绍：Lambda表达式的主要作用就是代替匿名内部类-匿名内部类是接口的实现类，并重写的接口的抽象方法-的烦琐语法"><span class="nav-number">1.</span> <span class="nav-text">Lambda介绍：Lambda表达式的主要作用就是代替匿名内部类(匿名内部类是接口的实现类，并重写的接口的抽象方法)的烦琐语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#定义三个接口"><span class="nav-number">2.</span> <span class="nav-text">定义三个接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试类"><span class="nav-number">3.</span> <span class="nav-text">测试类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结："><span class="nav-number">4.</span> <span class="nav-text">总结：</span></a></li></ol></div>
             
 
           </div>
