@@ -303,6 +303,256 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/30/hashmap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tanhq">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog_logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tanhq's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/30/hashmap/" itemprop="url">自己手动实现HashMap</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-30T21:56:01+08:00">
+                2018-04-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>HashMap的底层实现主要是基于数组和链表来实现的，HashMap中通过key的hashCode来计算hash值的，由这个hash值计算在数组中的位置，将新插入的元素放到数组的这个位置，如果新插入的元素的hash值跟这个位置上已有元素的hash值相同，就会出现hash冲突，这时候，就在该位置通过链表来插入新的元素</p>
+<p><img src="/2018/04/30/hashmap/hashmap.png" alt="结果"></p>
+<h1 id="Map接口"><a href="#Map接口" class="headerlink" title="Map接口"></a>Map接口</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public interface Map &#123;</span><br><span class="line">	int size();</span><br><span class="line">	boolean isEmpty();</span><br><span class="line">	Object get(Object key);</span><br><span class="line">	Object put(Object key, Object value);</span><br><span class="line">	interface Entry&#123;</span><br><span class="line">		Object getKey();</span><br><span class="line">		Object getValue();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="HashMap的实现"><a href="#HashMap的实现" class="headerlink" title="HashMap的实现"></a>HashMap的实现</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 数组加链表的结构</span><br><span class="line"> */</span><br><span class="line">public class HashMap implements Map &#123;</span><br><span class="line">	//默认容量16</span><br><span class="line">	private final int DEFAULT_CAPACITY = 16;</span><br><span class="line">	//内部存储结构，数组</span><br><span class="line">	Node[] table = new Node[DEFAULT_CAPACITY];</span><br><span class="line">	</span><br><span class="line">	private int size = 0;</span><br><span class="line">	</span><br><span class="line">	//集合元素个数</span><br><span class="line">	@Override</span><br><span class="line">	public int size() &#123;</span><br><span class="line">		return size;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public boolean isEmpty() &#123;</span><br><span class="line">		return size == 0;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * 取值</span><br><span class="line">	 */</span><br><span class="line">	@Override</span><br><span class="line">	public Object get(Object key) &#123;</span><br><span class="line">		int hashValue = hash(key);//获取key的hash值</span><br><span class="line">		int index = indexFor(hashValue, table.length);//求key所在数组的位置</span><br><span class="line">		for (Node node = table[index]; node != null ; node = node.next) &#123;</span><br><span class="line">			//hash值相同，key也相同，则返回该节点的value</span><br><span class="line">			if (node.hash == hashValue &amp;&amp; node.key.equals(key)) &#123;</span><br><span class="line">				return node.value;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		return null;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * 存值</span><br><span class="line">	 * 关于返回值：如果当前有一个相同的key，那么返回值是之前key对应的value,即oldValue</span><br><span class="line">	 * 			如果是新的key，则返回null</span><br><span class="line">	 * hashset中的add方法调用的是hashmap的put方法，通过判断put方法的返回值是否为空，</span><br><span class="line">	 * 来保证hashset的值不重复</span><br><span class="line">	 */</span><br><span class="line">	@Override</span><br><span class="line">	public Object put(Object key, Object value) &#123;</span><br><span class="line">		int hashValue = hash(key);//获取key的hash值</span><br><span class="line">		int index = indexFor(hashValue, table.length);//求key所在数组的位置</span><br><span class="line">		//index位置已经有数据了</span><br><span class="line">		for(Node node = table[index]; node != null ; node = node.next)&#123;</span><br><span class="line">			//链表中已有该key，则替换对应的value值，并将旧的oldValue返回</span><br><span class="line">			if (node.hash == hashValue &amp;&amp; node.key.equals(key)) &#123;</span><br><span class="line">				Object oldVaue = node.value;</span><br><span class="line">				node.value = value;</span><br><span class="line">				return oldVaue;</span><br><span class="line">			&#125; </span><br><span class="line">		&#125;</span><br><span class="line">		/**</span><br><span class="line">		 * 如果index位置没有数据，或是index位置有数据，但是不存在相同的key，则需要新增node</span><br><span class="line">		 */</span><br><span class="line">		addEntry(hashValue, key, value, index);</span><br><span class="line">		return null;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void addEntry(int hash, Object key, Object value, int i)&#123;</span><br><span class="line">		//集合中元素增加时，需要判断集合是否需要扩容</span><br><span class="line">		if(++size == table.length)&#123;</span><br><span class="line">			Node[] newTable = new Node[table.length * 2];</span><br><span class="line">			System.arraycopy(table, 0, newTable, 0, table.length);//数组拷贝</span><br><span class="line">			table = newTable;</span><br><span class="line">		&#125;</span><br><span class="line">		/*</span><br><span class="line">		 * 当i位置为null时，将null作为新增node的下一个节点，新增node放在table[i]处，这样是没问题的</span><br><span class="line">		 * 当i位置不为null时，将新增节点放在原始节点的前面，所以新增node的next指向原始i位置的node</span><br><span class="line">		 * 所以2者结合起来，使用同一行代码</span><br><span class="line">		 */</span><br><span class="line">		Node node = table[i];//获取当前位置的node</span><br><span class="line">		//生成一个新的node,并放到数组的index</span><br><span class="line">		table[i] = new Node(hash, key, value, node);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public int hash(Object key)&#123;</span><br><span class="line">		return key.hashCode();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public int indexFor(int hashValue, int length)&#123;</span><br><span class="line">		return hashValue % length;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Node结点"><a href="#Node结点" class="headerlink" title="Node结点"></a>Node结点</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 数组中的元素结点</span><br><span class="line"> * @author tanhq</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">public class Node implements Map.Entry&#123;</span><br><span class="line">	int hash;</span><br><span class="line">	Object key;</span><br><span class="line">	Object value;</span><br><span class="line">	Node next;//下一个结点</span><br><span class="line">	public Node(int hash, Object key, Object value, Node next) &#123;</span><br><span class="line">		super();</span><br><span class="line">		this.hash = hash;</span><br><span class="line">		this.key = key;</span><br><span class="line">		this.value = value;</span><br><span class="line">		this.next = next;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public Object getKey() &#123;</span><br><span class="line">		return key;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public Object getValue() &#123;</span><br><span class="line">		return value;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a>测试类</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class TestMyHashMap &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		//每个java类都需要至少有一个构造方法，所以对于代码里没有构造方法的，就自动生成一个无参的</span><br><span class="line">		HashMap hashMap=new HashMap();</span><br><span class="line">		hashMap.put(&quot;aaa&quot;, &quot;1111&quot;);</span><br><span class="line">		hashMap.put(&quot;bbb&quot;, &quot;2222&quot;);</span><br><span class="line">		hashMap.put(&quot;ccc&quot;, &quot;3333&quot;);</span><br><span class="line">		hashMap.put(&quot;ddd&quot;, &quot;4444&quot;);</span><br><span class="line">		hashMap.put(&quot;eee&quot;, &quot;5555&quot;);</span><br><span class="line">		hashMap.put(&quot;fff&quot;, &quot;6666&quot;);</span><br><span class="line">		hashMap.put(&quot;ddd&quot;, &quot;7777&quot;);</span><br><span class="line">		System.out.println(hashMap.get(&quot;ccc&quot;));</span><br><span class="line">		System.out.println(hashMap.get(&quot;ddd&quot;));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/30/Deque-Queue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tanhq">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog_logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tanhq's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/30/Deque-Queue/" itemprop="url">Deque和Queue</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-30T16:17:52+08:00">
+                2018-04-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Deque是双向队列，而Queue是对列-Duque比Stack和Vector更丰富"><a href="#Deque是双向队列，而Queue是对列-Duque比Stack和Vector更丰富" class="headerlink" title="Deque是双向队列，而Queue是对列;Duque比Stack和Vector更丰富"></a>Deque是双向队列，而Queue是对列;Duque比Stack和Vector更丰富</h1><pre><code>public class LinkedList&lt;E&gt;
+    extends AbstractSequentialList&lt;E&gt;
+    implements List&lt;E&gt;, Deque&lt;E&gt;, Cloneable, java.io.Serializable
+
+public interface Deque&lt;E&gt; extends Queue&lt;E&gt;
+public interface Queue&lt;E&gt; extends Collection&lt;E&gt;
+</code></pre><h1 id="ArrayDeque模拟栈-使用push-和pop"><a href="#ArrayDeque模拟栈-使用push-和pop" class="headerlink" title="ArrayDeque模拟栈,使用push()和pop()"></a>ArrayDeque模拟栈,使用push()和pop()</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	//ArrayDeque模拟栈</span><br><span class="line">	Deque&lt;String&gt; stack = new ArrayDeque&lt;String&gt;();</span><br><span class="line">	stack.push(&quot;aaa&quot;);</span><br><span class="line">	stack.push(&quot;bbb&quot;);</span><br><span class="line">	stack.push(&quot;ccc&quot;);</span><br><span class="line">	//访问，不pop出元素</span><br><span class="line">	System.out.println(stack.peek());</span><br><span class="line">	System.out.println(stack);</span><br><span class="line">	</span><br><span class="line">	//pop出元素</span><br><span class="line">	System.out.println(stack.pop());</span><br><span class="line">	System.out.println(stack);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="ArrayDeque模拟队列-使用offer-和poll"><a href="#ArrayDeque模拟队列-使用offer-和poll" class="headerlink" title="ArrayDeque模拟队列,使用offer()和poll()"></a>ArrayDeque模拟队列,使用offer()和poll()</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	//模拟Queue队列</span><br><span class="line">	Deque&lt;String&gt; queue = new ArrayDeque&lt;String&gt;();</span><br><span class="line">	//依次将3个元素加入队列</span><br><span class="line">	queue.offer(&quot;aaa&quot;);</span><br><span class="line">	queue.offer(&quot;bbb&quot;);</span><br><span class="line">	queue.offer(&quot;ccc&quot;);</span><br><span class="line">	System.out.println(queue);</span><br><span class="line">	//访问，不poll元素</span><br><span class="line">	System.out.println(queue.peek());</span><br><span class="line">	System.out.println(queue);</span><br><span class="line">	</span><br><span class="line">	//poll元素</span><br><span class="line">	System.out.println(queue.poll());</span><br><span class="line">	System.out.println(queue);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/30/hashcode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -400,7 +650,7 @@ hash表中有1、2、3、4、5、6、7、8个位置，存第一个数，1%8=1，
 </code></pre><h1 id="六、如果对象的equals方法被重写，那么对象的HashCode方法也尽量重写"><a href="#六、如果对象的equals方法被重写，那么对象的HashCode方法也尽量重写" class="headerlink" title="六、如果对象的equals方法被重写，那么对象的HashCode方法也尽量重写"></a>六、如果对象的equals方法被重写，那么对象的HashCode方法也尽量重写</h1><pre><code>举个栗子：有个A类重写了equals方法，但是没有重写hashCode方法，看输出结果，对象a1和对象a2使用equals方法相等，按照上面的hashcode的用法，那么他们两个的hashcode肯定相等，
 但是这里由于没重写hashcode方法，他们两个hashcode并不一样，所以，我们在重写了equals方法后，尽量也重写了hashcode方法，
 通过一定的算法，使他们在equals相等时，也会有相同的hashcode值。
-</code></pre><p>  <img src="/2018/04/30/hashcode/hashcode1.png" alt="结果"><br>  <img src="/2018/04/30/hashcode/hashcode2.png" alt="结果"></p>
+</code></pre><p>  <img src="/2018/04/30/hashcode/hashcode1.png" alt="结果"><br>  <img src="/2018/04/30/hashcode/hashcode3.png" alt="结果"></p>
 <h1 id="总结：历史是勇敢者创造的，让我们拿出信心，采取行动，携手向着未来前进。-—习近平在世界经济论坛2017年年会开幕式上的主旨演讲"><a href="#总结：历史是勇敢者创造的，让我们拿出信心，采取行动，携手向着未来前进。-—习近平在世界经济论坛2017年年会开幕式上的主旨演讲" class="headerlink" title="总结：历史是勇敢者创造的，让我们拿出信心，采取行动，携手向着未来前进。               —习近平在世界经济论坛2017年年会开幕式上的主旨演讲"></a>总结：历史是勇敢者创造的，让我们拿出信心，采取行动，携手向着未来前进。               —习近平在世界经济论坛2017年年会开幕式上的主旨演讲</h1>
           
         
@@ -1317,253 +1567,6 @@ hash表中有1、2、3、4、5、6、7、8个位置，存第一个数，1%8=1，
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/10/poiImport/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="tanhq">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/blog_logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tanhq's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/10/poiImport/" itemprop="url">poi数据导入</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-10T21:09:58+08:00">
-                2018-03-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="使用poi将execl中的数据导入到数据库"><a href="#使用poi将execl中的数据导入到数据库" class="headerlink" title="使用poi将execl中的数据导入到数据库"></a>使用poi将execl中的数据导入到数据库</h1><h1 id="前台页面"><a href="#前台页面" class="headerlink" title="前台页面"></a>前台页面</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;form action=<span class="string">"importData.do"</span> enctype=<span class="string">"multipart/form-data"</span> method=<span class="string">"POST"</span> &gt;</span><br><span class="line">		&lt;input <span class="built_in">type</span>=<span class="string">"file"</span> id=<span class="string">"excelFile"</span> name=<span class="string">"excelFile"</span> class=<span class="string">"required"</span> /&gt;</span><br><span class="line">		&lt;@cms_perm url=<span class="string">"/contentImport/importData.do"</span>&gt;</span><br><span class="line">		&lt;input class=<span class="string">"add"</span> <span class="built_in">type</span>=<span class="string">"submit"</span> value=<span class="string">"导入"</span> onclick=<span class="string">"this.form.action='importData.do';"</span>/&gt;</span><br><span class="line">		&lt;/@cms_perm&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
-<h1 id="前台页面-1"><a href="#前台页面-1" class="headerlink" title="前台页面"></a>前台页面</h1><pre><code>![前台](poiImport/poiImport.png)
-</code></pre><h1 id="后台action"><a href="#后台action" class="headerlink" title="后台action"></a>后台action</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">@RequiresPermissions(<span class="string">"contentImport:importData"</span>)</span><br><span class="line">@RequestMapping(<span class="string">"/contentImport/importData.do"</span>)</span><br><span class="line">public String importDate(Integer channelId,@RequestParam(value = <span class="string">"excelFile"</span>, required = <span class="literal">false</span>) MultipartFile excelFile,</span><br><span class="line">		HttpServletRequest request,Integer pageNo, Date expressDate,</span><br><span class="line">		HttpServletResponse response, ModelMap model) &#123;</span><br><span class="line">	CmsUser user = CmsUtils.getUser(request);</span><br><span class="line">	Date date = new Date();</span><br><span class="line">	DateFormat df = new SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>);</span><br><span class="line">	String strDate = df.format(date); </span><br><span class="line">	<span class="keyword">if</span>(excelFile != null) &#123;</span><br><span class="line">		String excelFileName = excelFile.getOriginalFilename();</span><br><span class="line">		List&lt;String&gt; fileTypes = new ArrayList&lt;String&gt;();</span><br><span class="line">		fileTypes.add(<span class="string">"application/octet-stream"</span>);</span><br><span class="line">		fileTypes.add(<span class="string">"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"</span>);</span><br><span class="line">		fileTypes.add(<span class="string">"application/vnd.ms-excel"</span>);</span><br><span class="line">		<span class="keyword">if</span>(excelFile.getSize() == 0)&#123;</span><br><span class="line">			model.addAttribute(<span class="string">"message"</span>, <span class="string">"cms.importNullMessage"</span>);</span><br><span class="line">			<span class="built_in">return</span> selectTktExpressList(request, expressDate, pageNo, model);</span><br><span class="line">		&#125;</span><br><span class="line">		// 通过文件类型判断上传文件</span><br><span class="line">		<span class="keyword">if</span> (!fileTypes.contains(excelFile.getContentType())) &#123;</span><br><span class="line">			model.addAttribute(<span class="string">"message"</span>, <span class="string">"cms.importMessage"</span>);</span><br><span class="line">			<span class="built_in">return</span> selectTktExpressList(request, expressDate, pageNo, model);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(!<span class="string">".xls"</span>.equals(excelFileName.substring(excelFileName.lastIndexOf(<span class="string">"."</span>))))&#123;</span><br><span class="line">			model.addAttribute(<span class="string">"message"</span>, <span class="string">"cms.importFormatMessage"</span>);</span><br><span class="line">			<span class="built_in">return</span> selectTktExpressList(request, expressDate, pageNo, model);</span><br><span class="line">		&#125;</span><br><span class="line">		File f= new File(request.getSession().getServletContext().getRealPath(<span class="string">"/uploadfile/"</span>));</span><br><span class="line">		<span class="keyword">if</span>(!f.exists()) &#123;</span><br><span class="line">			f.mkdirs();</span><br><span class="line">		&#125;</span><br><span class="line">		String fileName = request.getSession().getServletContext().getRealPath(<span class="string">"/uploadfile/"</span> + excelFileName);	</span><br><span class="line">		</span><br><span class="line">		try &#123;</span><br><span class="line">			//上传Excel文件</span><br><span class="line">			this.upload(excelFile,fileName);</span><br><span class="line">			//导入Excel数据到DB中</span><br><span class="line">			List&lt;TktExpress&gt; list = getAllByExcel(fileName);</span><br><span class="line">			<span class="keyword">if</span> (list != null) &#123;</span><br><span class="line">				<span class="keyword">for</span> (TktExpress tktExpress : list) &#123;</span><br><span class="line">					//添加导入人</span><br><span class="line">					<span class="keyword">if</span>(<span class="string">""</span>.equals(tktExpress.getImportMan()) || tktExpress.getImportMan() == null)&#123;</span><br><span class="line">						tktExpress.setImportMan(user.getUsername());</span><br><span class="line">					&#125;</span><br><span class="line">					//添加更新时间</span><br><span class="line">					<span class="keyword">if</span>(tktExpress.getUpdateDate() == null)&#123;</span><br><span class="line">						tktExpress.setUpdateDate(df.parse(strDate));</span><br><span class="line">					&#125;</span><br><span class="line">					tktExpressMng.addTktExpress(tktExpress);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;catch(Exception e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">			log.error(e.getMessage());</span><br><span class="line">			model.addAttribute(<span class="string">"message"</span>, <span class="string">"global.failed"</span>);</span><br><span class="line">			<span class="built_in">return</span>  selectTktExpressList(request, expressDate, pageNo, model);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	model.addAttribute(<span class="string">"message"</span>, <span class="string">"global.success"</span>);</span><br><span class="line">	<span class="built_in">return</span>  selectTktExpressList(request, expressDate, pageNo, model);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="上传文件的公用方法"><a href="#上传文件的公用方法" class="headerlink" title="上传文件的公用方法"></a>上传文件的公用方法</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">	 * 上传文件</span><br><span class="line">	 */</span><br><span class="line">	public void upload(MultipartFile excelFile,String fileName ) throws Exception  &#123;</span><br><span class="line">		InputStream stream = null;</span><br><span class="line">		OutputStream bos = null;</span><br><span class="line">		try &#123;</span><br><span class="line">			stream = excelFile.getInputStream();// 把文件读入</span><br><span class="line">			bos = new FileOutputStream(fileName);</span><br><span class="line"></span><br><span class="line">			int bytesRead = 0;</span><br><span class="line">			byte[] buffer = new byte[8192];</span><br><span class="line">			<span class="keyword">while</span> ((bytesRead = stream.read(buffer, 0, 8192)) != -1) &#123;</span><br><span class="line">				bos.write(buffer, 0, bytesRead);// 将文件写入服务器</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;catch(Exception e) &#123;</span><br><span class="line">			e.printStackTrace();   </span><br><span class="line">			log.error(e.getMessage());</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			try &#123;</span><br><span class="line">				<span class="keyword">if</span>(stream != null) &#123;</span><br><span class="line">					stream.close();</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span>(bos != null) &#123;</span><br><span class="line">					bos.close();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;catch(Exception e) &#123;</span><br><span class="line">				e.printStackTrace();   </span><br><span class="line">				log.error(e.getMessage());</span><br><span class="line">				throw new Exception(e);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="获取execl表中的数据"><a href="#获取execl表中的数据" class="headerlink" title="获取execl表中的数据"></a>获取execl表中的数据</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">     * 查询指定目录中电子表格中所有的数据                                             </span><br><span class="line">     * @param file 文件完整路径</span><br><span class="line">     * @<span class="built_in">return</span></span><br><span class="line">	 * @throws ParseException </span><br><span class="line">	 * @throws IOException </span><br><span class="line">	 * @throws BiffException </span><br><span class="line">     */</span><br><span class="line">    public List&lt;TktExpress&gt; getAllByExcel(String file) throws Exception&#123;</span><br><span class="line">        List&lt;TktExpress&gt; list=new ArrayList&lt;TktExpress&gt;();</span><br><span class="line">            Workbook rwb=Workbook.getWorkbook(new File(file));</span><br><span class="line">            Sheet rs=rwb.getSheet(0);//或者rwb.getSheet(0)  rwb.getSheet(<span class="string">"Test Shee 1"</span>)</span><br><span class="line">            int clos=rs.getColumns();//得到所有的列</span><br><span class="line">            int rows=rs.getRows();//得到所有的行</span><br><span class="line">            DateFormat df = new SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>);</span><br><span class="line">            </span><br><span class="line">            //总共有6列</span><br><span class="line">            <span class="keyword">for</span> (int i = 1; i &lt; rows; i++) &#123;</span><br><span class="line">                <span class="keyword">for</span> (int j = 0; j &lt; clos; j++) &#123;</span><br><span class="line">                    //第一个是列数，第二个是行数  HSSFDateUtil.getJavaDate(hssfCell.getNumericCellValue())</span><br><span class="line">                   // String expressDate=rs.getCell(j, i).getContents();//日期</span><br><span class="line">                    Cell cell = rs.getCell(j, i);</span><br><span class="line">					Date date = null;</span><br><span class="line">					<span class="keyword">if</span> (cell.getType() == CellType.DATE) &#123;</span><br><span class="line">						DateCell dc = (DateCell) cell;</span><br><span class="line">						date = df.parse(df.format(dc.getDate()));//获取单元格的date类型</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">if</span> (date != null) &#123;</span><br><span class="line">						String xuhao = rs.getCell(++j, i).getContents();//序号</span><br><span class="line">						String expressCompany = rs.getCell(++j, i).getContents();//快递公司 </span><br><span class="line">						String lastWeekDown = rs.getCell(++j, i).getContents();</span><br><span class="line">						String lastWeekCountrySide = rs.getCell(++j, i).getContents();</span><br><span class="line">						String lastWeekUp = rs.getCell(++j, i).getContents();</span><br><span class="line">						TktExpress entity = new TktExpress();</span><br><span class="line">						entity.setExpressDate(date);</span><br><span class="line">						<span class="keyword">if</span>(!<span class="string">""</span>.equals(xuhao) &amp;&amp; xuhao != null)&#123;</span><br><span class="line">							entity.setOrderNumber(Integer.parseInt(xuhao));</span><br><span class="line">						&#125;</span><br><span class="line">						entity.setExpressCompany(expressCompany);</span><br><span class="line">						<span class="keyword">if</span>(!<span class="string">""</span>.equals(lastWeekDown) &amp;&amp; lastWeekDown != null)&#123;</span><br><span class="line">							entity.setLastWeekDown(Integer.parseInt(lastWeekDown));</span><br><span class="line">						&#125;</span><br><span class="line">						<span class="keyword">if</span>(!<span class="string">""</span>.equals(lastWeekCountrySide) &amp;&amp; lastWeekCountrySide != null)&#123;</span><br><span class="line">							entity.setLastWeekCountrySide(Integer.parseInt(lastWeekCountrySide));</span><br><span class="line">						&#125;</span><br><span class="line">						<span class="keyword">if</span>(!<span class="string">""</span>.equals(lastWeekUp) &amp;&amp; lastWeekUp != null)&#123;</span><br><span class="line">							entity.setLastWeekUp(Integer.parseInt(lastWeekUp));</span><br><span class="line">						&#125;</span><br><span class="line">						list.add(entity);</span><br><span class="line">					&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">						<span class="built_in">continue</span>;</span><br><span class="line">					&#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="built_in">return</span> list;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/10/poiExport/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="tanhq">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/blog_logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tanhq's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/10/poiExport/" itemprop="url">poi数据导出</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-10T20:44:34+08:00">
-                2018-03-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="poi数据导出到execl"><a href="#poi数据导出到execl" class="headerlink" title="poi数据导出到execl"></a>poi数据导出到execl</h1><h1 id="使用maven-pom-xml文件-引入Apache-poi-jar包"><a href="#使用maven-pom-xml文件-引入Apache-poi-jar包" class="headerlink" title="使用maven(pom.xml文件)引入Apache poi jar包"></a>使用maven(pom.xml文件)引入Apache poi jar包</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- poi文件管理 --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.apache.poi&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;poi&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;3.10-FINAL&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	 &lt;groupId&gt;org.apache.poi&lt;/groupId&gt;</span><br><span class="line">	 &lt;artifactId&gt;poi-ooxml&lt;/artifactId&gt;</span><br><span class="line">	 &lt;version&gt;3.10-FINAL&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-<h1 id="前台导出按钮"><a href="#前台导出按钮" class="headerlink" title="前台导出按钮"></a>前台导出按钮</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=<span class="string">"ropt"</span>&gt;</span><br><span class="line">	&lt;form action=<span class="string">"v_export.do"</span> method=<span class="string">"post"</span> &gt;</span><br><span class="line">	&lt;input <span class="built_in">type</span>=<span class="string">"hidden"</span> name=<span class="string">"userId"</span> value=<span class="string">"<span class="variable">$&#123;userId!&#125;</span>"</span>/&gt;</span><br><span class="line">	&lt;input <span class="built_in">type</span>=<span class="string">"hidden"</span> name=<span class="string">"siteId"</span> value=<span class="string">"<span class="variable">$&#123;siteId!&#125;</span>"</span>/&gt;</span><br><span class="line">	&lt;input <span class="built_in">type</span>=<span class="string">"hidden"</span> name=<span class="string">"category"</span> value=1 /&gt;</span><br><span class="line">	&lt;input class=<span class="string">"export"</span> <span class="built_in">type</span>=<span class="string">"submit"</span> style=<span class="string">"margin-right: 1000px;"</span> value=<span class="string">"&lt;@s.m "</span>template.export<span class="string">"/&gt;"</span>/&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span><br><span class="line">	&lt;/form&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-<h1 id="后台action导出execl表格的方法"><a href="#后台action导出execl表格的方法" class="headerlink" title="后台action导出execl表格的方法"></a>后台action导出execl表格的方法</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 日志导出功能:</span><br><span class="line"> * 1,导出登陆成功日志</span><br><span class="line"> * 2，导出登陆失败日志</span><br><span class="line"> * 3，导出后台操作日志</span><br><span class="line"> * @<span class="built_in">return</span></span><br><span class="line"> */</span><br><span class="line">@RequestMapping(<span class="string">"/log/v_export.do"</span>)</span><br><span class="line">public void logExport(Integer userId, Integer siteId, Integer category, Integer pageNo, </span><br><span class="line">		HttpServletRequest request, HttpServletResponse response, ModelMap model) &#123;</span><br><span class="line">	//获取登陆失败的信息，不需要userId,siteId</span><br><span class="line">	<span class="keyword">if</span>(category == 2)&#123;</span><br><span class="line">		userId = null;</span><br><span class="line">		siteId = null;</span><br><span class="line">	&#125;</span><br><span class="line">	// 获取指定类型的日志列表</span><br><span class="line">	List&lt;CmsLog&gt; list =  manager.getList(userId, siteId, category);</span><br><span class="line">	</span><br><span class="line">	//生成<span class="built_in">export</span>表</span><br><span class="line">	HSSFWorkbook wb = exportExcel(list);</span><br><span class="line"></span><br><span class="line">	try &#123;</span><br><span class="line">	   response.setContentType(<span class="string">"application/vnd.ms-excel;charset=utf-8"</span>);</span><br><span class="line">		Calendar ca = Calendar.getInstance();</span><br><span class="line"></span><br><span class="line">		String filename=ca.get(Calendar.YEAR)+<span class="string">""</span>+(ca.get(Calendar.MONTH)+1)+<span class="string">""</span>+ca.get(Calendar.DATE)+<span class="string">""</span>+ca.get(Calendar.HOUR)+<span class="string">""</span>+ca.get(Calendar.MINUTE)+<span class="string">""</span>+<span class="string">".xls"</span>;</span><br><span class="line">		response.setHeader(<span class="string">"Content-disposition"</span>,	<span class="string">"attachment; filename="</span>+filename);</span><br><span class="line">		response.setHeader(<span class="string">"Pragma"</span>, <span class="string">"public"</span>);</span><br><span class="line">    	response.setHeader(<span class="string">"Cache-Control"</span>, <span class="string">"max-age=30"</span>);</span><br><span class="line">		OutputStream out = response.getOutputStream();</span><br><span class="line">		wb.write(out);</span><br><span class="line">		out.flush();</span><br><span class="line">		out.close();</span><br><span class="line">	&#125; catch (IOException e) &#123;</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="下面代码是提取的生成export表的方法-有些字段需要做空指针判断"><a href="#下面代码是提取的生成export表的方法-有些字段需要做空指针判断" class="headerlink" title="下面代码是提取的生成export表的方法,有些字段需要做空指针判断"></a>下面代码是提取的生成export表的方法,有些字段需要做空指针判断</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">private HSSFWorkbook exportExcel(List&lt;CmsLog&gt; list) &#123;</span><br><span class="line">	HSSFWorkbook wb = new HSSFWorkbook();</span><br><span class="line">	HSSFSheet sheet = wb.createSheet(<span class="string">"Pojo"</span>);</span><br><span class="line">	HSSFCellStyle style = wb.createCellStyle();</span><br><span class="line">	sheet.autoSizeColumn(0);</span><br><span class="line">	style.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框</span><br><span class="line">	style.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框</span><br><span class="line">	style.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框</span><br><span class="line">	style.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框</span><br><span class="line">	style.setAlignment(HSSFCellStyle.ALIGN_CENTER);</span><br><span class="line">	//第一行  设置表头</span><br><span class="line">	HSSFRow row0 = sheet.createRow(0);</span><br><span class="line">	HSSFCell cell0 = row0.createCell(0);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"日志ID"</span>);</span><br><span class="line">    cell0 = row0.createCell(1);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"用户ID"</span>);</span><br><span class="line">	cell0 = row0.createCell(2);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"站点ID"</span>);</span><br><span class="line">	cell0 = row0.createCell(3);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"日志类别"</span>);</span><br><span class="line">	cell0 = row0.createCell(4);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"日志记录时间"</span>);</span><br><span class="line">	cell0 = row0.createCell(5);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"IP地址"</span>);</span><br><span class="line">	cell0 = row0.createCell(6);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"路径"</span>);</span><br><span class="line">	cell0 = row0.createCell(7);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"标题"</span>);</span><br><span class="line">	cell0 = row0.createCell(8);</span><br><span class="line">	cell0.setCellStyle(style);</span><br><span class="line">	cell0.setCellValue(<span class="string">"内容"</span>);</span><br><span class="line">	//循环遍历list  将内容写进Excel表格中</span><br><span class="line">	int i=1;</span><br><span class="line">	DateFormat dFormat = new SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>);</span><br><span class="line">	<span class="keyword">for</span> (CmsLog cmsLog : list) &#123;</span><br><span class="line">		int j = 0;</span><br><span class="line">		HSSFRow row = sheet.createRow(i);</span><br><span class="line">		HSSFCell cell = row.createCell(j);</span><br><span class="line">		cell.setCellStyle(style);</span><br><span class="line">		cell.setCellValue(cmsLog.getId());</span><br><span class="line">		cell = row.createCell(++j);</span><br><span class="line">		cell.setCellStyle(style);</span><br><span class="line">		<span class="keyword">if</span>(cmsLog.getUser() != null )&#123;</span><br><span class="line">			cell.setCellValue(cmsLog.getUser().getId());</span><br><span class="line">		&#125;</span><br><span class="line">	    cell = row.createCell(++j);</span><br><span class="line">	    cell.setCellStyle(style);</span><br><span class="line">	    <span class="keyword">if</span> (cmsLog.getSite()!= null ) &#123;</span><br><span class="line">			cell.setCellValue(cmsLog.getSite().getId());</span><br><span class="line">		&#125;</span><br><span class="line">		cell = row.createCell(++j);</span><br><span class="line">	    cell.setCellStyle(style);</span><br><span class="line">	    <span class="keyword">if</span> (cmsLog.getCategory() != null || !<span class="string">""</span>.equals(cmsLog.getCategory())) &#123;</span><br><span class="line">			cell.setCellValue(cmsLog.getCategory());</span><br><span class="line">		&#125;</span><br><span class="line">		cell = row.createCell(++j);</span><br><span class="line">	    cell.setCellStyle(style);</span><br><span class="line">	    <span class="keyword">if</span> (cmsLog.getTime()!=null || !<span class="string">""</span>.equals(cmsLog.getTime())) &#123;</span><br><span class="line">			cell.setCellValue(dFormat.format(cmsLog.getTime()));</span><br><span class="line">		&#125;</span><br><span class="line">		cell = row.createCell(++j);</span><br><span class="line">	    cell.setCellStyle(style);</span><br><span class="line">	    <span class="keyword">if</span> (cmsLog.getIp()!=null || !<span class="string">""</span>.equals(cmsLog.getIp())) &#123;</span><br><span class="line">			cell.setCellValue(cmsLog.getIp());</span><br><span class="line">		&#125;</span><br><span class="line">		cell = row.createCell(++j);</span><br><span class="line">	    cell.setCellStyle(style);</span><br><span class="line">	    <span class="keyword">if</span> (cmsLog.getUrl()!=null || !<span class="string">""</span>.equals(cmsLog.getUrl())) &#123;</span><br><span class="line">			cell.setCellValue(cmsLog.getUrl());</span><br><span class="line">		&#125;</span><br><span class="line">		cell = row.createCell(++j);</span><br><span class="line">	    cell.setCellStyle(style);</span><br><span class="line">	    <span class="keyword">if</span> (cmsLog.getTitle()!=null || !<span class="string">""</span>.equals(cmsLog.getTitle())) &#123;</span><br><span class="line">			cell.setCellValue(cmsLog.getTitle());</span><br><span class="line">		&#125;</span><br><span class="line">		cell = row.createCell(++j);</span><br><span class="line">	    cell.setCellStyle(style);</span><br><span class="line">	    <span class="keyword">if</span> (cmsLog.getContent()!=null || !<span class="string">""</span>.equals(cmsLog.getContent())) &#123;</span><br><span class="line">			cell.setCellValue(cmsLog.getContent());</span><br><span class="line">		&#125;</span><br><span class="line">		i++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> wb;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1618,7 +1621,7 @@ hash表中有1、2、3、4、5、6、7、8个位置，存第一个数，1%8=1，
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1640,7 +1643,7 @@ hash表中有1、2、3、4、5、6、7、8个位置，存第一个数，1%8=1，
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

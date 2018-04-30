@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="javaSE,HashMap," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="HashMap的底层实现主要是基于数组和链表来实现的，HashMap中通过key的hashCode来计算hash值的，由这个hash值计算在数组中的位置，将新插入的元素放到数组的这个位置，如果新插入的元素的hash值跟这个位置上已有元素的hash值相同，就会出现hash冲突，这时候，就在该位置通过链表来插入新的元素  Map接口12345678910public interface Map &amp;#1">
+<meta name="keywords" content="javaSE,HashMap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自己手动实现HashMap">
+<meta property="og:url" content="http://yoursite.com/2018/04/30/hashmap/index.html">
+<meta property="og:site_name" content="Tanhq&#39;s Blog">
+<meta property="og:description" content="HashMap的底层实现主要是基于数组和链表来实现的，HashMap中通过key的hashCode来计算hash值的，由这个hash值计算在数组中的位置，将新插入的元素放到数组的这个位置，如果新插入的元素的hash值跟这个位置上已有元素的hash值相同，就会出现hash冲突，这时候，就在该位置通过链表来插入新的元素  Map接口12345678910public interface Map &amp;#1">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/04/30/hashmap/hashmap.png">
+<meta property="og:updated_time" content="2018-04-30T14:05:39.199Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自己手动实现HashMap">
+<meta name="twitter:description" content="HashMap的底层实现主要是基于数组和链表来实现的，HashMap中通过key的hashCode来计算hash值的，由这个hash值计算在数组中的位置，将新插入的元素放到数组的这个位置，如果新插入的元素的hash值跟这个位置上已有元素的hash值相同，就会出现hash冲突，这时候，就在该位置通过链表来插入新的元素  Map接口12345678910public interface Map &amp;#1">
+<meta name="twitter:image" content="http://yoursite.com/2018/04/30/hashmap/hashmap.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/30/hashmap/"/>
+
+
+
+
+
+  <title>自己手动实现HashMap | Tanhq's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+	
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tanhq's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">脚踏实地行，海阔天空飞</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-something">
+          <a href="/something" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            有料
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/30/hashmap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tanhq">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog_logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tanhq's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">自己手动实现HashMap</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-30T21:56:01+08:00">
+                2018-04-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>HashMap的底层实现主要是基于数组和链表来实现的，HashMap中通过key的hashCode来计算hash值的，由这个hash值计算在数组中的位置，将新插入的元素放到数组的这个位置，如果新插入的元素的hash值跟这个位置上已有元素的hash值相同，就会出现hash冲突，这时候，就在该位置通过链表来插入新的元素</p>
+<p><img src="/2018/04/30/hashmap/hashmap.png" alt="结果"></p>
+<h1 id="Map接口"><a href="#Map接口" class="headerlink" title="Map接口"></a>Map接口</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public interface Map &#123;</span><br><span class="line">	int size();</span><br><span class="line">	boolean isEmpty();</span><br><span class="line">	Object get(Object key);</span><br><span class="line">	Object put(Object key, Object value);</span><br><span class="line">	interface Entry&#123;</span><br><span class="line">		Object getKey();</span><br><span class="line">		Object getValue();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="HashMap的实现"><a href="#HashMap的实现" class="headerlink" title="HashMap的实现"></a>HashMap的实现</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 数组加链表的结构</span><br><span class="line"> */</span><br><span class="line">public class HashMap implements Map &#123;</span><br><span class="line">	//默认容量16</span><br><span class="line">	private final int DEFAULT_CAPACITY = 16;</span><br><span class="line">	//内部存储结构，数组</span><br><span class="line">	Node[] table = new Node[DEFAULT_CAPACITY];</span><br><span class="line">	</span><br><span class="line">	private int size = 0;</span><br><span class="line">	</span><br><span class="line">	//集合元素个数</span><br><span class="line">	@Override</span><br><span class="line">	public int size() &#123;</span><br><span class="line">		return size;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public boolean isEmpty() &#123;</span><br><span class="line">		return size == 0;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * 取值</span><br><span class="line">	 */</span><br><span class="line">	@Override</span><br><span class="line">	public Object get(Object key) &#123;</span><br><span class="line">		int hashValue = hash(key);//获取key的hash值</span><br><span class="line">		int index = indexFor(hashValue, table.length);//求key所在数组的位置</span><br><span class="line">		for (Node node = table[index]; node != null ; node = node.next) &#123;</span><br><span class="line">			//hash值相同，key也相同，则返回该节点的value</span><br><span class="line">			if (node.hash == hashValue &amp;&amp; node.key.equals(key)) &#123;</span><br><span class="line">				return node.value;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		return null;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * 存值</span><br><span class="line">	 * 关于返回值：如果当前有一个相同的key，那么返回值是之前key对应的value,即oldValue</span><br><span class="line">	 * 			如果是新的key，则返回null</span><br><span class="line">	 * hashset中的add方法调用的是hashmap的put方法，通过判断put方法的返回值是否为空，</span><br><span class="line">	 * 来保证hashset的值不重复</span><br><span class="line">	 */</span><br><span class="line">	@Override</span><br><span class="line">	public Object put(Object key, Object value) &#123;</span><br><span class="line">		int hashValue = hash(key);//获取key的hash值</span><br><span class="line">		int index = indexFor(hashValue, table.length);//求key所在数组的位置</span><br><span class="line">		//index位置已经有数据了</span><br><span class="line">		for(Node node = table[index]; node != null ; node = node.next)&#123;</span><br><span class="line">			//链表中已有该key，则替换对应的value值，并将旧的oldValue返回</span><br><span class="line">			if (node.hash == hashValue &amp;&amp; node.key.equals(key)) &#123;</span><br><span class="line">				Object oldVaue = node.value;</span><br><span class="line">				node.value = value;</span><br><span class="line">				return oldVaue;</span><br><span class="line">			&#125; </span><br><span class="line">		&#125;</span><br><span class="line">		/**</span><br><span class="line">		 * 如果index位置没有数据，或是index位置有数据，但是不存在相同的key，则需要新增node</span><br><span class="line">		 */</span><br><span class="line">		addEntry(hashValue, key, value, index);</span><br><span class="line">		return null;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void addEntry(int hash, Object key, Object value, int i)&#123;</span><br><span class="line">		//集合中元素增加时，需要判断集合是否需要扩容</span><br><span class="line">		if(++size == table.length)&#123;</span><br><span class="line">			Node[] newTable = new Node[table.length * 2];</span><br><span class="line">			System.arraycopy(table, 0, newTable, 0, table.length);//数组拷贝</span><br><span class="line">			table = newTable;</span><br><span class="line">		&#125;</span><br><span class="line">		/*</span><br><span class="line">		 * 当i位置为null时，将null作为新增node的下一个节点，新增node放在table[i]处，这样是没问题的</span><br><span class="line">		 * 当i位置不为null时，将新增节点放在原始节点的前面，所以新增node的next指向原始i位置的node</span><br><span class="line">		 * 所以2者结合起来，使用同一行代码</span><br><span class="line">		 */</span><br><span class="line">		Node node = table[i];//获取当前位置的node</span><br><span class="line">		//生成一个新的node,并放到数组的index</span><br><span class="line">		table[i] = new Node(hash, key, value, node);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public int hash(Object key)&#123;</span><br><span class="line">		return key.hashCode();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public int indexFor(int hashValue, int length)&#123;</span><br><span class="line">		return hashValue % length;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Node结点"><a href="#Node结点" class="headerlink" title="Node结点"></a>Node结点</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 数组中的元素结点</span><br><span class="line"> * @author tanhq</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">public class Node implements Map.Entry&#123;</span><br><span class="line">	int hash;</span><br><span class="line">	Object key;</span><br><span class="line">	Object value;</span><br><span class="line">	Node next;//下一个结点</span><br><span class="line">	public Node(int hash, Object key, Object value, Node next) &#123;</span><br><span class="line">		super();</span><br><span class="line">		this.hash = hash;</span><br><span class="line">		this.key = key;</span><br><span class="line">		this.value = value;</span><br><span class="line">		this.next = next;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public Object getKey() &#123;</span><br><span class="line">		return key;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public Object getValue() &#123;</span><br><span class="line">		return value;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a>测试类</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class TestMyHashMap &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		//每个java类都需要至少有一个构造方法，所以对于代码里没有构造方法的，就自动生成一个无参的</span><br><span class="line">		HashMap hashMap=new HashMap();</span><br><span class="line">		hashMap.put(&quot;aaa&quot;, &quot;1111&quot;);</span><br><span class="line">		hashMap.put(&quot;bbb&quot;, &quot;2222&quot;);</span><br><span class="line">		hashMap.put(&quot;ccc&quot;, &quot;3333&quot;);</span><br><span class="line">		hashMap.put(&quot;ddd&quot;, &quot;4444&quot;);</span><br><span class="line">		hashMap.put(&quot;eee&quot;, &quot;5555&quot;);</span><br><span class="line">		hashMap.put(&quot;fff&quot;, &quot;6666&quot;);</span><br><span class="line">		hashMap.put(&quot;ddd&quot;, &quot;7777&quot;);</span><br><span class="line">		System.out.println(hashMap.get(&quot;ccc&quot;));</span><br><span class="line">		System.out.println(hashMap.get(&quot;ddd&quot;));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javaSE/" rel="tag"># javaSE</a>
+          
+            <a href="/tags/HashMap/" rel="tag"># HashMap</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/30/Deque-Queue/" rel="next" title="Deque和Queue">
+                <i class="fa fa-chevron-left"></i> Deque和Queue
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/blog_logo.jpg"
+                alt="tanhq" />
+            
+              <p class="site-author-name" itemprop="name">tanhq</p>
+              <p class="site-description motion-element" itemprop="description">java 后端开发</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Map接口"><span class="nav-number">1.</span> <span class="nav-text">Map接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HashMap的实现"><span class="nav-number">2.</span> <span class="nav-text">HashMap的实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Node结点"><span class="nav-number">3.</span> <span class="nav-text">Node结点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试类"><span class="nav-number">4.</span> <span class="nav-text">测试类</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tanhq</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+<br/>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
