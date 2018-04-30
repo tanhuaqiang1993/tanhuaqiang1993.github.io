@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="JavaEE,IO流,File," />
+  <meta name="keywords" content="javaSE," />
 
 
 
@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="文件的上传12345678910111213141516171819202122232425262728293031323334/** * 上传文件 */public void upload(MultipartFile excelFile,String fileName ) throws Exception  &amp;#123;	InputStream stream = null;	OutputStre">
-<meta name="keywords" content="JavaEE,IO流,File">
+<meta name="description" content="一、hash和hash表Hash：散列，就是把任意长度的输入通过散列算法变换成固定长度的输出。 简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数  hash是一个函数，该函数中的实现就是一种算法，就是通过一系列的算法来得到一个hash值 hash表，通过hash算法得到的hash值就在这张hash表中，也就是说，hash表就是所有的hash值组成的 二、hashcode：哈希值h">
+<meta name="keywords" content="javaSE">
 <meta property="og:type" content="article">
-<meta property="og:title" content="文件的上传和下载">
-<meta property="og:url" content="http://yoursite.com/2018/03/10/fileUpAndDown/index.html">
+<meta property="og:title" content="hashcode详解">
+<meta property="og:url" content="http://yoursite.com/2018/04/30/hashcode/index.html">
 <meta property="og:site_name" content="Tanhq&#39;s Blog">
-<meta property="og:description" content="文件的上传12345678910111213141516171819202122232425262728293031323334/** * 上传文件 */public void upload(MultipartFile excelFile,String fileName ) throws Exception  &amp;#123;	InputStream stream = null;	OutputStre">
+<meta property="og:description" content="一、hash和hash表Hash：散列，就是把任意长度的输入通过散列算法变换成固定长度的输出。 简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数  hash是一个函数，该函数中的实现就是一种算法，就是通过一系列的算法来得到一个hash值 hash表，通过hash算法得到的hash值就在这张hash表中，也就是说，hash表就是所有的hash值组成的 二、hashcode：哈希值h">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-10T13:31:53.539Z">
+<meta property="og:image" content="http://yoursite.com/2018/04/30/hashcode/hashcode1.png">
+<meta property="og:image" content="http://yoursite.com/2018/04/30/hashcode/hashcode2.png">
+<meta property="og:updated_time" content="2018-04-30T07:32:24.171Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="文件的上传和下载">
-<meta name="twitter:description" content="文件的上传12345678910111213141516171819202122232425262728293031323334/** * 上传文件 */public void upload(MultipartFile excelFile,String fileName ) throws Exception  &amp;#123;	InputStream stream = null;	OutputStre">
+<meta name="twitter:title" content="hashcode详解">
+<meta name="twitter:description" content="一、hash和hash表Hash：散列，就是把任意长度的输入通过散列算法变换成固定长度的输出。 简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数  hash是一个函数，该函数中的实现就是一种算法，就是通过一系列的算法来得到一个hash值 hash表，通过hash算法得到的hash值就在这张hash表中，也就是说，hash表就是所有的hash值组成的 二、hashcode：哈希值h">
+<meta name="twitter:image" content="http://yoursite.com/2018/04/30/hashcode/hashcode1.png">
 
 
 
@@ -120,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/03/10/fileUpAndDown/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/30/hashcode/"/>
 
 
 
 
 
-  <title>文件的上传和下载 | Tanhq's Blog</title>
+  <title>hashcode详解 | Tanhq's Blog</title>
   
 
 
@@ -304,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/10/fileUpAndDown/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/30/hashcode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="tanhq">
@@ -321,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">文件的上传和下载</h1>
+          <h1 class="post-title" itemprop="name headline">hashcode详解</h1>
         
 
         <div class="post-meta">
@@ -333,8 +336,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-10T21:25:38+08:00">
-                2018-03-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-30T14:02:17+08:00">
+                2018-04-30
               </time>
             
 
@@ -371,10 +374,34 @@
       
 
       
-        <h1 id="文件的上传"><a href="#文件的上传" class="headerlink" title="文件的上传"></a>文件的上传</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 上传文件</span><br><span class="line"> */</span><br><span class="line">public void upload(MultipartFile excelFile,String fileName ) throws Exception  &#123;</span><br><span class="line">	InputStream stream = null;</span><br><span class="line">	OutputStream bos = null;</span><br><span class="line">	try &#123;</span><br><span class="line">		stream = excelFile.getInputStream();// 把文件读入</span><br><span class="line">		bos = new FileOutputStream(fileName);</span><br><span class="line"></span><br><span class="line">		int bytesRead = 0;</span><br><span class="line">		byte[] buffer = new byte[8192];</span><br><span class="line">		<span class="keyword">while</span> ((bytesRead = stream.read(buffer, 0, 8192)) != -1) &#123;</span><br><span class="line">			bos.write(buffer, 0, bytesRead);// 将文件写入服务器</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;catch(Exception e) &#123;</span><br><span class="line">		e.printStackTrace();   </span><br><span class="line">		log.error(e.getMessage());</span><br><span class="line">	&#125; finally &#123;</span><br><span class="line">		try &#123;</span><br><span class="line">			<span class="keyword">if</span>(stream != null) &#123;</span><br><span class="line">				stream.close();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(bos != null) &#123;</span><br><span class="line">				bos.close();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;catch(Exception e) &#123;</span><br><span class="line">			e.printStackTrace();   </span><br><span class="line">			log.error(e.getMessage());</span><br><span class="line">			throw new Exception(e);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="文件的下载"><a href="#文件的下载" class="headerlink" title="文件的下载"></a>文件的下载</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(value=<span class="string">"/contentImport/downloadTktExpressTemplate.do"</span>)</span><br><span class="line">public ResponseEntity&lt;byte[]&gt; downloadTktExpressTemplate(HttpServletRequest request) throws IOException &#123;</span><br><span class="line">	String path = request.getSession().getServletContext().getRealPath(<span class="string">"/res/template/快递数据.xls"</span>);</span><br><span class="line">	File file = new File(path);</span><br><span class="line">	String fileName = file.getName();</span><br><span class="line">	String dfileName = new String(fileName.getBytes(<span class="string">"gb2312"</span>), <span class="string">"iso8859-1"</span>); </span><br><span class="line">	HttpHeaders headers = new HttpHeaders(); </span><br><span class="line">	headers.setContentType(MediaType.APPLICATION_OCTET_STREAM); </span><br><span class="line">	headers.setContentDispositionFormData(<span class="string">"attachment"</span>, dfileName); </span><br><span class="line">	<span class="built_in">return</span> new ResponseEntity&lt;byte[]&gt;(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><pre><code>文件上传和下载是项目中常用的功能，可以整理以后直接拿来用
-</code></pre>
+        <h1 id="一、hash和hash表"><a href="#一、hash和hash表" class="headerlink" title="一、hash和hash表"></a>一、hash和hash表</h1><pre><code>Hash：散列，就是把任意长度的输入通过散列算法变换成固定长度的输出。
+简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数
+
+hash是一个函数，该函数中的实现就是一种算法，就是通过一系列的算法来得到一个hash值
+hash表，通过hash算法得到的hash值就在这张hash表中，也就是说，hash表就是所有的hash值组成的
+</code></pre><h1 id="二、hashcode：哈希值"><a href="#二、hashcode：哈希值" class="headerlink" title="二、hashcode：哈希值"></a>二、hashcode：哈希值</h1><pre><code>hashcode就是通过hash函数得来的，通俗的说，就是通过某一种算法得到的，hashcode就是在hash表中有对应的位置
+</code></pre><h1 id="三、每个对象都有hashcode，对象的hashcode怎么得来的呢？"><a href="#三、每个对象都有hashcode，对象的hashcode怎么得来的呢？" class="headerlink" title="三、每个对象都有hashcode，对象的hashcode怎么得来的呢？"></a>三、每个对象都有hashcode，对象的hashcode怎么得来的呢？</h1><pre><code>首先一个对象肯定有物理地址，对象的物理地址跟这个hashcode地址不一样，
+hashcode代表对象的地址说的是对象在hash表中的位置，物理地址说的对象存放在内存中的地址
+那么对象如何得到hashcode呢？通过对象的内部地址(也就是物理地址)转换成一个整数，然后该整数通过hash函数的算法就得到了hashcode
+所以，hashcode是什么呢？就是在hash表中对应的位置
+举个例子，hash表中有 hashcode为1、hashcode为2、(...)3、4、5、6、7、8这样八个位置，有一个对象A，A的物理地址转换为一个整数17(这是假如)，就通过直接取余算法，17%8=1，那么A的hashcode就为1，且A就在hash表中1的位置
+</code></pre><h1 id="四、hashcode有什么作用呢？"><a href="#四、hashcode有什么作用呢？" class="headerlink" title="四、hashcode有什么作用呢？"></a>四、hashcode有什么作用呢？</h1><pre><code>HashCode的存在主要是为了查找的快捷性，HashCode是用来在散列存储结构中确定对象的存储地址的(后半句说的用hashcode来代表对象就是在hash表中的位置)
+为什么hashcode就查找的更快，比如：我们有一个能存放1000个数这样大的内存中，在其中要存放1000个不一样的数字，用最笨的方法，就是存一个数字，就遍历一遍，看有没有相同的数，
+当存了900个数字，开始存901个数字的时候，就需要跟900个数字进行对比，这样就很麻烦，很是消耗时间，用hashcode来记录对象的位置，来看一下。
+hash表中有1、2、3、4、5、6、7、8个位置，存第一个数，1%8=1，hashcode为1，该数就放在hash表中1的位置，存到100个数字，hash表中8个位置会有很多数字了，1中可能有13个数字（1,9...81,89,97），
+存101个数字时，他先查hashcode值对应的位置，101%8=5,那么就有12个数字和他的hashcode相同，他只需要跟这12个数字相比较(equals)，如果没有一个值和他相同，那么就放在5这个位置，
+这样比较的次数就少了很多，实际上hash表中有很多位置，这里只是举例只有8个，所以比较的次数会让你觉得也挺多的，实际上，如果hash表很大，那么比较的次数就很少很少了。  
+通过对原始方法和使用hashcode方法进行对比，我们就知道了hashcode的作用，并且为什么要使用hashcode了.
+</code></pre><h1 id="五、equals方法和hashcode的关系？"><a href="#五、equals方法和hashcode的关系？" class="headerlink" title="五、equals方法和hashcode的关系？"></a>五、equals方法和hashcode的关系？</h1><pre><code>通过前面这个例子，大概可以知道，先通过hashcode来比较，如果hashcode相等，那么就用equals方法来比较两个对象是否相等，
+用个例子说明：上面说的hash表中的8个位置，就好比8个桶，每个桶里能装很多的对象，对象A通过hash函数算法得到将它放到1号桶中，当然肯定有别的对象也会放到1号桶中，
+如果对象B也通过算法分到了1号桶，那么它如何识别桶中其他对象是否和它一样呢，这时候就需要equals方法来进行筛选了。
+1、如果两个对象equals相等，那么这两个对象的HashCode一定也相同
+2、如果两个对象的HashCode相同，不代表两个对象就相同，只能说明这两个对象在散列存储结构中，存放于同一个位置
+</code></pre><h1 id="六、如果对象的equals方法被重写，那么对象的HashCode方法也尽量重写"><a href="#六、如果对象的equals方法被重写，那么对象的HashCode方法也尽量重写" class="headerlink" title="六、如果对象的equals方法被重写，那么对象的HashCode方法也尽量重写"></a>六、如果对象的equals方法被重写，那么对象的HashCode方法也尽量重写</h1><pre><code>举个栗子：有个A类重写了equals方法，但是没有重写hashCode方法，看输出结果，对象a1和对象a2使用equals方法相等，按照上面的hashcode的用法，那么他们两个的hashcode肯定相等，
+但是这里由于没重写hashcode方法，他们两个hashcode并不一样，所以，我们在重写了equals方法后，尽量也重写了hashcode方法，
+通过一定的算法，使他们在equals相等时，也会有相同的hashcode值。
+</code></pre><p>  <img src="/2018/04/30/hashcode/hashcode1.png" alt="结果"><br>  <img src="/2018/04/30/hashcode/hashcode2.png" alt="结果"></p>
+<h1 id="总结：历史是勇敢者创造的，让我们拿出信心，采取行动，携手向着未来前进。-—习近平在世界经济论坛2017年年会开幕式上的主旨演讲"><a href="#总结：历史是勇敢者创造的，让我们拿出信心，采取行动，携手向着未来前进。-—习近平在世界经济论坛2017年年会开幕式上的主旨演讲" class="headerlink" title="总结：历史是勇敢者创造的，让我们拿出信心，采取行动，携手向着未来前进。               —习近平在世界经济论坛2017年年会开幕式上的主旨演讲"></a>总结：历史是勇敢者创造的，让我们拿出信心，采取行动，携手向着未来前进。               —习近平在世界经济论坛2017年年会开幕式上的主旨演讲</h1>
       
     </div>
     
@@ -391,11 +418,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/JavaEE/" rel="tag"># JavaEE</a>
-          
-            <a href="/tags/IO流/" rel="tag"># IO流</a>
-          
-            <a href="/tags/File/" rel="tag"># File</a>
+            <a href="/tags/javaSE/" rel="tag"># javaSE</a>
           
         </div>
       
@@ -408,8 +431,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/10/poiImport/" rel="next" title="poi数据导入">
-                <i class="fa fa-chevron-left"></i> poi数据导入
+              <a href="/2018/04/29/equals/" rel="next" title="Java中==号与equals()方法的区别">
+                <i class="fa fa-chevron-left"></i> Java中==号与equals()方法的区别
               </a>
             
           </div>
@@ -417,10 +440,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/20/sendEmail/" rel="prev" title="sendEmail">
-                sendEmail <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -556,7 +575,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#文件的上传"><span class="nav-number">1.</span> <span class="nav-text">文件的上传</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件的下载"><span class="nav-number">2.</span> <span class="nav-text">文件的下载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结："><span class="nav-number">3.</span> <span class="nav-text">总结：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、hash和hash表"><span class="nav-number">1.</span> <span class="nav-text">一、hash和hash表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、hashcode：哈希值"><span class="nav-number">2.</span> <span class="nav-text">二、hashcode：哈希值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、每个对象都有hashcode，对象的hashcode怎么得来的呢？"><span class="nav-number">3.</span> <span class="nav-text">三、每个对象都有hashcode，对象的hashcode怎么得来的呢？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、hashcode有什么作用呢？"><span class="nav-number">4.</span> <span class="nav-text">四、hashcode有什么作用呢？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、equals方法和hashcode的关系？"><span class="nav-number">5.</span> <span class="nav-text">五、equals方法和hashcode的关系？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六、如果对象的equals方法被重写，那么对象的HashCode方法也尽量重写"><span class="nav-number">6.</span> <span class="nav-text">六、如果对象的equals方法被重写，那么对象的HashCode方法也尽量重写</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结：历史是勇敢者创造的，让我们拿出信心，采取行动，携手向着未来前进。-—习近平在世界经济论坛2017年年会开幕式上的主旨演讲"><span class="nav-number">7.</span> <span class="nav-text">总结：历史是勇敢者创造的，让我们拿出信心，采取行动，携手向着未来前进。               —习近平在世界经济论坛2017年年会开幕式上的主旨演讲</span></a></li></ol></div>
             
 
           </div>
