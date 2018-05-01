@@ -303,6 +303,128 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/10/fileUpAndDown/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tanhq">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog_logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tanhq's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/10/fileUpAndDown/" itemprop="url">文件的上传和下载</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-10T21:25:38+08:00">
+                2018-03-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="文件的上传"><a href="#文件的上传" class="headerlink" title="文件的上传"></a>文件的上传</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 上传文件</span><br><span class="line"> */</span><br><span class="line">public void upload(MultipartFile excelFile,String fileName ) throws Exception  &#123;</span><br><span class="line">	InputStream stream = null;</span><br><span class="line">	OutputStream bos = null;</span><br><span class="line">	try &#123;</span><br><span class="line">		stream = excelFile.getInputStream();// 把文件读入</span><br><span class="line">		bos = new FileOutputStream(fileName);</span><br><span class="line"></span><br><span class="line">		int bytesRead = 0;</span><br><span class="line">		byte[] buffer = new byte[8192];</span><br><span class="line">		<span class="keyword">while</span> ((bytesRead = stream.read(buffer, 0, 8192)) != -1) &#123;</span><br><span class="line">			bos.write(buffer, 0, bytesRead);// 将文件写入服务器</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;catch(Exception e) &#123;</span><br><span class="line">		e.printStackTrace();   </span><br><span class="line">		log.error(e.getMessage());</span><br><span class="line">	&#125; finally &#123;</span><br><span class="line">		try &#123;</span><br><span class="line">			<span class="keyword">if</span>(stream != null) &#123;</span><br><span class="line">				stream.close();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(bos != null) &#123;</span><br><span class="line">				bos.close();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;catch(Exception e) &#123;</span><br><span class="line">			e.printStackTrace();   </span><br><span class="line">			log.error(e.getMessage());</span><br><span class="line">			throw new Exception(e);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="文件的下载"><a href="#文件的下载" class="headerlink" title="文件的下载"></a>文件的下载</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(value=<span class="string">"/contentImport/downloadTktExpressTemplate.do"</span>)</span><br><span class="line">public ResponseEntity&lt;byte[]&gt; downloadTktExpressTemplate(HttpServletRequest request) throws IOException &#123;</span><br><span class="line">	String path = request.getSession().getServletContext().getRealPath(<span class="string">"/res/template/快递数据.xls"</span>);</span><br><span class="line">	File file = new File(path);</span><br><span class="line">	String fileName = file.getName();</span><br><span class="line">	String dfileName = new String(fileName.getBytes(<span class="string">"gb2312"</span>), <span class="string">"iso8859-1"</span>); </span><br><span class="line">	HttpHeaders headers = new HttpHeaders(); </span><br><span class="line">	headers.setContentType(MediaType.APPLICATION_OCTET_STREAM); </span><br><span class="line">	headers.setContentDispositionFormData(<span class="string">"attachment"</span>, dfileName); </span><br><span class="line">	<span class="built_in">return</span> new ResponseEntity&lt;byte[]&gt;(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><pre><code>文件上传和下载是项目中常用的功能，可以整理以后直接拿来用
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/10/poiImport/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -981,7 +1103,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1003,7 +1125,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
