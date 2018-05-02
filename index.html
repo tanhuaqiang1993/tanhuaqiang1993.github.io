@@ -303,6 +303,127 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/02/json/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tanhq">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog_logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tanhq's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/02/json/" itemprop="url">JSONObject put(),accumulate(),element()的区别</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-02T14:35:28+08:00">
+                2018-05-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1,public Object put (Object key, Object value),如果此JSONObject对象之前存在一个value在这个key下，当前的value会替换掉之前的value<br>2,public JSONObject accumulate (String key, Object value) 累积value到这个key下<br>3,public JSONObject element (String key, Object value) 和put()方法类似</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">package com.sxt.test.json;</span><br><span class="line"></span><br><span class="line">import net.sf.json.JSONObject;</span><br><span class="line"></span><br><span class="line">public class JsonTest &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		JSONObject object = new JSONObject();</span><br><span class="line">		//public Object put (Object key, Object value) </span><br><span class="line">		//如果此JSONObject对象之前存在一个value在这个key下，当前的value会替换掉之前的value</span><br><span class="line">		object.put(&quot;aaa&quot;, &quot;111&quot;);</span><br><span class="line">		object.put(&quot;aaa&quot;, &quot;222&quot;);</span><br><span class="line">		object.put(&quot;bbb&quot;, &quot;333&quot;);</span><br><span class="line">		object.put(&quot;ccc&quot;, &quot;444&quot;);</span><br><span class="line">		System.out.println(object.toString());//&#123;&quot;aaa&quot;:&quot;222&quot;,&quot;ccc&quot;:&quot;444&quot;,&quot;bbb&quot;:&quot;333&quot;&#125;</span><br><span class="line">		</span><br><span class="line">		JSONObject object2 = new JSONObject();</span><br><span class="line">		//public JSONObject accumulate (String key, Object value) 累积value到这个key下</span><br><span class="line">		object2.accumulate(&quot;aaa&quot;, &quot;111&quot;);</span><br><span class="line">		object2.accumulate(&quot;aaa&quot;, &quot;222&quot;);</span><br><span class="line">		object2.accumulate(&quot;aaa&quot;, &quot;222&quot;);//累积value到这个key下</span><br><span class="line">		object2.accumulate(&quot;bbb&quot;, &quot;333&quot;);</span><br><span class="line">		object2.accumulate(&quot;ccc&quot;, &quot;444&quot;);</span><br><span class="line">		//&#123;&quot;aaa&quot;:[&quot;111&quot;,&quot;222&quot;,&quot;222&quot;],&quot;ccc&quot;:&quot;444&quot;,&quot;bbb&quot;:&quot;333&quot;&#125;</span><br><span class="line">		System.out.println(object2.toString());</span><br><span class="line">		</span><br><span class="line">		JSONObject object3 = new JSONObject();</span><br><span class="line">		//public JSONObject element (String key, Object value) </span><br><span class="line">		object3.element(&quot;aaa&quot;, 111);</span><br><span class="line">		object3.element(&quot;aaa&quot;, 222);//当前的value会替换掉之前的value</span><br><span class="line">		object3.element(&quot;bbb&quot;, 333);</span><br><span class="line">		object3.element(&quot;ccc&quot;, 444);</span><br><span class="line">		//&#123;&quot;aaa&quot;:222,&quot;ccc&quot;:444,&quot;bbb&quot;:333&#125;</span><br><span class="line">		System.out.println(object3);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/01/mybatisEhcache/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1449,130 +1570,6 @@ hash表中有1、2、3、4、5、6、7、8个位置，存第一个数，1%8=1，
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/20/sendEmail/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="tanhq">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/blog_logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tanhq's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/20/sendEmail/" itemprop="url">sendEmail</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-20T20:32:19+08:00">
-                2018-03-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>利用qq邮箱服务器发邮件,使用之前必须<a href="http://blog.csdn.net/qq_33556185/article/details/51028952" target="_blank" rel="noopener">开启smtp服务</a></p>
-<h1 id="mail-properties配置"><a href="#mail-properties配置" class="headerlink" title="mail.properties配置"></a>mail.properties配置</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mail.host = smtp.qq.com</span><br><span class="line">mail.from = 983671836@qq.com</span><br><span class="line">mail.to = tanhq@ec.com.cn</span><br><span class="line"><span class="comment">#\u59D3\u540D</span></span><br><span class="line">mail.personal=\u8C2D\u534E\u5F3A</span><br><span class="line">mail.username = 983671836@qq.com</span><br><span class="line">mail.password = wqjlfulwlwrqbdfg</span><br><span class="line">mail.port = 465</span><br><span class="line">mail.content.subject=\u90AE\u4EF6\u4E3B\u9898</span><br><span class="line">mail.content.encode=utf-8</span><br><span class="line">mail.content.tpl=\u9A8C\u8BC1\u7801\u4E3A\uFF1A&#123;0&#125;\uFF0C\u6709\u6548\u65F6\u95F43\u5206\u949F</span><br></pre></td></tr></table></figure>
-<h1 id="发邮件代码"><a href="#发邮件代码" class="headerlink" title="发邮件代码"></a>发邮件代码</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">package com.gft.email;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.InputStream;</span><br><span class="line">import java.text.MessageFormat;</span><br><span class="line">import java.util.Properties;</span><br><span class="line">import java.util.Random;</span><br><span class="line"></span><br><span class="line">import org.springframework.mail.SimpleMailMessage;</span><br><span class="line">import org.springframework.mail.javamail.JavaMailSenderImpl;</span><br><span class="line"></span><br><span class="line">public class SendEmail &#123;</span><br><span class="line"></span><br><span class="line">	private static Properties properties ;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		</span><br><span class="line">        // 获取系统属性</span><br><span class="line">	    properties = System.getProperties();</span><br><span class="line">	    // 加载资源文件</span><br><span class="line">		InputStream <span class="keyword">in</span> = SendEmail.class.getResourceAsStream(<span class="string">"/mail.properties"</span>);</span><br><span class="line">		</span><br><span class="line">		//随机生成一个4位数字</span><br><span class="line">		Random rand = new Random();</span><br><span class="line">		Integer number = rand.nextInt(9000)+1000;</span><br><span class="line">		try &#123;</span><br><span class="line">			properties.load(<span class="keyword">in</span>);</span><br><span class="line">			</span><br><span class="line">			// 创建邮件发送服务器  ,端口号默认的,不需要</span><br><span class="line">			JavaMailSenderImpl sender = new JavaMailSenderImpl();</span><br><span class="line">			sender.setHost(properties.getProperty(<span class="string">"mail.host"</span>));</span><br><span class="line">			//不需要端口号，否则发送失败</span><br><span class="line">			//sender.setPort(Integer.valueOf(properties.getProperty(<span class="string">"mail.port"</span>)));</span><br><span class="line">			sender.setUsername(properties.getProperty(<span class="string">"mail.username"</span>));</span><br><span class="line">			sender.setPassword(properties.getProperty(<span class="string">"mail.password"</span>));</span><br><span class="line">			</span><br><span class="line">	        //加认证机制  </span><br><span class="line">	        Properties javaMailProperties = new Properties();  </span><br><span class="line">	        javaMailProperties.put(<span class="string">"mail.smtp.auth"</span>, <span class="literal">true</span>);   </span><br><span class="line">	        javaMailProperties.put(<span class="string">"mail.smtp.starttls.enable"</span>, <span class="literal">true</span>);   </span><br><span class="line">	        javaMailProperties.put(<span class="string">"mail.smtp.timeout"</span>, 5000);   </span><br><span class="line">	        sender.setJavaMailProperties(javaMailProperties); </span><br><span class="line">	        </span><br><span class="line">	        //创建邮件内容  </span><br><span class="line">	        SimpleMailMessage message=new SimpleMailMessage();  </span><br><span class="line">	        message.setFrom(properties.getProperty(<span class="string">"mail.from"</span>));  </span><br><span class="line">	        message.setTo(properties.getProperty(<span class="string">"mail.to"</span>));  </span><br><span class="line">	        message.setSubject(properties.getProperty(<span class="string">"mail.content.subject"</span>));</span><br><span class="line">	        //数字number必须转成String，否则数据(1432)会格式化为1,432</span><br><span class="line">	        message.setText(MessageFormat.format(properties.getProperty(<span class="string">"mail.content.tpl"</span>), number.toString()));</span><br><span class="line">	        //发送邮件  </span><br><span class="line">	        sender.send(message);  </span><br><span class="line">	        System.out.println(<span class="string">"邮件发送成功"</span>);</span><br><span class="line">		&#125; catch (IOException e) &#123;</span><br><span class="line">			throw new RuntimeException(<span class="string">"Error while processing mail.properties"</span>, e);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="qq邮箱服务器POP3-SMTP服务必须是开启的"><a href="#qq邮箱服务器POP3-SMTP服务必须是开启的" class="headerlink" title="qq邮箱服务器POP3/SMTP服务必须是开启的"></a>qq邮箱服务器POP3/SMTP服务必须是开启的</h1><p>  <img src="/2018/03/20/sendEmail/email.png" alt="结果"></p>
-<h1 id="常用的收件-发件服务器的地址和端口"><a href="#常用的收件-发件服务器的地址和端口" class="headerlink" title="常用的收件/发件服务器的地址和端口"></a>常用的收件/发件服务器的地址和端口</h1><p>  <img src="/2018/03/20/sendEmail/email2.png" alt="结果"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1627,7 +1624,7 @@ hash表中有1、2、3、4、5、6、7、8个位置，存第一个数，1%8=1，
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1649,7 +1646,7 @@ hash表中有1、2、3、4、5、6、7、8个位置，存第一个数，1%8=1，
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
