@@ -303,6 +303,256 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/15/reflect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tanhq">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog_logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tanhq's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/15/reflect/" itemprop="url">reflect</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-15T16:05:29+08:00">
+                2018-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Java反射机制调用private类型的构造方法"><a href="#Java反射机制调用private类型的构造方法" class="headerlink" title="Java反射机制调用private类型的构造方法"></a>Java反射机制调用private类型的构造方法</h1><h1 id="先定义一个具有双重锁的线程安全的单例模式，同时带有两个私有的构造方法"><a href="#先定义一个具有双重锁的线程安全的单例模式，同时带有两个私有的构造方法" class="headerlink" title="先定义一个具有双重锁的线程安全的单例模式，同时带有两个私有的构造方法"></a>先定义一个具有双重锁的线程安全的单例模式，同时带有两个私有的构造方法</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">package com.sxt.test.pattern;</span><br><span class="line"></span><br><span class="line">//单例模式</span><br><span class="line">public class SingletonPattern &#123;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * 定义一个私有的静态singleton变量</span><br><span class="line">	 * volatile:防止指令重排序</span><br><span class="line">	 */</span><br><span class="line">	private static volatile SingletonPattern singleton = null;</span><br><span class="line">	</span><br><span class="line">	//私有的构造方法，限制其它类直接new一个实例对象，要获取对象，必须使用下面的getInstance()方法</span><br><span class="line">	private SingletonPattern()&#123;</span><br><span class="line">		System.out.println(&quot;我是无参数的构造方法！！！&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	private SingletonPattern(String a)&#123;</span><br><span class="line">		System.out.println(&quot;我是有参数的构造方法，参数a=&quot; + a );</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/**</span><br><span class="line">	 * 静态的方法，可以使用类名调用，同时也可以直接使用静态变量singleton</span><br><span class="line">	 * 必须使用双重锁：当a,b两个线程都执行到同步代码块这里时，a线程进入同步代码块，实例化一个Singleton()，结束代码块的执行；</span><br><span class="line">	 * 这时b线程进来，如果不进行判断，又实例化一个Singleton(),</span><br><span class="line">	 * 这时栈中的一个成员变量指向内存中的两个对象，这是不允许的，所以必须使用双重判断</span><br><span class="line">	 * @return</span><br><span class="line">	 */</span><br><span class="line">	public static SingletonPattern getInstance()&#123;</span><br><span class="line">		if(singleton == null)&#123;</span><br><span class="line">			synchronized (SingletonPattern.class) &#123;</span><br><span class="line">				if (singleton == null) &#123;</span><br><span class="line">					singleton = new SingletonPattern();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		return singleton;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a>测试类</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">package com.sxt.test.pattern;</span><br><span class="line"></span><br><span class="line">import java.lang.reflect.Constructor;</span><br><span class="line">import java.lang.reflect.InvocationTargetException;</span><br><span class="line"></span><br><span class="line">public class ReflectDemo &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		//获取Class对象</span><br><span class="line">		Class clazz = SingletonPattern.class;</span><br><span class="line">		try &#123;</span><br><span class="line">			/**</span><br><span class="line">			 * 返回带有指定参数列表的构造方法的 Constructor对象，此处是无参数的构造方法</span><br><span class="line">			 */</span><br><span class="line">			Constructor c0 = clazz.getDeclaredConstructor();</span><br><span class="line">			/**</span><br><span class="line">			 * 将此对象的 accessible 标志设置为指示的布尔值</span><br><span class="line">			 * 将私有的构造方法设置为可用</span><br><span class="line">			 * 值为 true 则指示反射的对象在使用时应该取消 Java 语言访问检查。</span><br><span class="line">			 * 值为 false 则指示反射的对象应该实施 Java 语言访问检查</span><br><span class="line">			 * 如果不设置为true,则会报：java.lang.IllegalAccessException:</span><br><span class="line">			 */</span><br><span class="line">			c0.setAccessible(true);</span><br><span class="line">			SingletonPattern st = (SingletonPattern) c0.newInstance();</span><br><span class="line">			</span><br><span class="line">			/**</span><br><span class="line">			 * 返回带有指定参数列表的构造方法的 Constructor对象，此处是有参数的构造方法</span><br><span class="line">			 * 调用哪个构造方法，就传哪个参数</span><br><span class="line">			 */</span><br><span class="line">			Constructor c1 = clazz.getDeclaredConstructor(String.class);</span><br><span class="line">			c1.setAccessible(true);</span><br><span class="line">			SingletonPattern st2 = (SingletonPattern)c1.newInstance(&quot;tanhq&quot;);</span><br><span class="line">			</span><br><span class="line">		&#125; catch (NoSuchMethodException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; catch (SecurityException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; catch (InstantiationException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; catch (IllegalAccessException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; catch (IllegalArgumentException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; catch (InvocationTargetException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="控制台打印"><a href="#控制台打印" class="headerlink" title="控制台打印"></a>控制台打印</h1><p>  <img src="/2018/04/15/reflect/reflect.png" alt="结果"></p>
+<h1 id="总结：幻想无数，不如动次真格。所有的总结都在代码里！"><a href="#总结：幻想无数，不如动次真格。所有的总结都在代码里！" class="headerlink" title="总结：幻想无数，不如动次真格。所有的总结都在代码里！"></a>总结：幻想无数，不如动次真格。所有的总结都在代码里！</h1>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/13/Lambda/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tanhq">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog_logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tanhq's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/13/Lambda/" itemprop="url">Lambda</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-13T21:52:26+08:00">
+                2018-04-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Lambda介绍：Lambda表达式的主要作用就是代替匿名内部类-匿名内部类是接口的实现类，并重写的接口的抽象方法-的烦琐语法"><a href="#Lambda介绍：Lambda表达式的主要作用就是代替匿名内部类-匿名内部类是接口的实现类，并重写的接口的抽象方法-的烦琐语法" class="headerlink" title="Lambda介绍：Lambda表达式的主要作用就是代替匿名内部类(匿名内部类是接口的实现类，并重写的接口的抽象方法)的烦琐语法"></a>Lambda介绍：Lambda表达式的主要作用就是代替匿名内部类(匿名内部类是接口的实现类，并重写的接口的抽象方法)的烦琐语法</h1><pre><code>三部分组成：
+   形参列表：重写方法的形参,允许省略参数的类型
+   箭头：-&gt;
+   代码块：重写方法的具体内容
+</code></pre><h1 id="定义三个接口"><a href="#定义三个接口" class="headerlink" title="定义三个接口"></a>定义三个接口</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 定义三个接口</span><br><span class="line"> */</span><br><span class="line">interface Eatable &#123;</span><br><span class="line">	void taste();</span><br><span class="line">&#125;</span><br><span class="line">interface Flyable&#123;</span><br><span class="line">	void fly(String weather);</span><br><span class="line">&#125;</span><br><span class="line">interface Addable&#123;</span><br><span class="line">	int add(int a ,int b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a>测试类</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public class LambdaQs &#123;</span><br><span class="line">	public void eat(Eatable e)&#123;</span><br><span class="line">		e.taste();//调用的是接口实现类重写的方法</span><br><span class="line">	&#125;</span><br><span class="line">	public void drive(Flyable f)&#123;</span><br><span class="line">		f.fly(<span class="string">"碧空如洗的晴日！"</span>);//调用的是接口实现类重写的方法</span><br><span class="line">	&#125;</span><br><span class="line">	public void <span class="built_in">test</span>(Addable add)&#123;</span><br><span class="line">		System.out.println(<span class="string">"5和3的和为："</span>+add.add(3, 5));</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		LambdaQs lq = new LambdaQs();</span><br><span class="line">		/*</span><br><span class="line">		 * Lambda表达式的代码块只有一条语句，可以省略花括号</span><br><span class="line">		 * 不带形参的匿名方法</span><br><span class="line">		 */</span><br><span class="line">		lq.eat(() -&gt; System.out.println(<span class="string">"苹果的味道很好！！"</span>));</span><br><span class="line">		</span><br><span class="line">		//参数列表可以省略参数类型，参数列表只有一个参数，可以省略圆括号</span><br><span class="line">		lq.drive( weather -&gt; &#123;</span><br><span class="line">			System.out.println(<span class="string">"今天天气是："</span>+weather);</span><br><span class="line">			System.out.println(<span class="string">"直升机飞行平稳！"</span>);</span><br><span class="line">		&#125;);</span><br><span class="line">		</span><br><span class="line">		/*</span><br><span class="line">		 * 重写的是实现类的方法，参数是形参，而不是实参</span><br><span class="line">		 * 代码块只有一条语句，可以省略花括号，而且这句为返回语句，可以省略<span class="built_in">return</span>关键字</span><br><span class="line">		 */</span><br><span class="line">		lq.test((a,b) -&gt; a+b);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  控制台打印<br>      <img src="/2018/04/13/Lambda/Lambda.png" alt="结果"></p>
+<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><pre><code>1，Lambda表达式的主要作用就是 代替匿名内部类(匿名内部类是接口的实现类，并重写的接口的抽象方法)的烦琐语法。
+2，Lambda表达式只能实现一个方法，因此他只能为只有一个抽象方法的接口（函数式接口）创建对象
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/20/sendEmail/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1227,7 +1477,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1249,7 +1499,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
